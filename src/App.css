@@ -1,0 +1,265 @@
+body {
+  max-width: 1440px;
+  box-sizing: border-box;
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 1rem;
+  /* background-color: black;
+  color: white; */
+}
+/* -------------- Navbar     */
+.nav {
+  position: absolute;
+  display: flex;
+
+  z-index: 1;
+  width: 100%;
+  color: white;
+}
+.nav-small {
+  width: 100%;
+  padding: 15px 0;
+  font-weight: 400;
+}
+.nav-big {
+  width: 100%;
+  background-color: #f6faff61;
+  height: 85px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+.nav-big-wrapper {
+  display: flex;
+  margin: 0;
+  margin-left: auto;
+}
+
+.nav-big-main {
+  display: flex;
+  margin: auto;
+
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.nav-big-main li {
+  margin: auto;
+  margin-right: 30px;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 600;
+}
+.login-btn {
+  border-color: white !important;
+  color: white !important;
+  border: 2px solid;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.login-btn:hover {
+  decoration: none;
+}
+.login-btn-nav {
+  margin: auto;
+  margin-left: 20px;
+}
+.nav-center {
+  margin: auto 0;
+  width: 160px;
+}
+
+@media (min-width: 992px) {
+  .nav-big-main li {
+    display: block;
+    position: relative;
+  }
+}
+
+/* -------------- Banner section */
+.section-1-banner {
+  background-image: url("https://doccure-laravel.dreamguystech.com/template-pediatric/public/assets/img/search-bg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 400px;
+  position: relative;
+  padding: 150px 0px 130px;
+}
+.banner-wrapper {
+  padding-top: 120px;
+  margin: auto;
+  color: white;
+}
+.banner-btn {
+  background-color: #fe235b;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  padding: 8px 25px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: auto;
+}
+.banner-small-text {
+  font-size: 16px;
+  max-width: 550px;
+  margin-bottom: 20px;
+}
+.banner-wrapper p {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+.banner-wrapper h1 {
+  margin-bottom: 15px;
+  font-size: 40px;
+  font-weight: 600;
+  max-width: 500px;
+}
+/* --------------- Section-2 */
+
+.section-2 {
+  padding: 60px 0;
+}
+.form-control {
+  border-color: #dcdcdc;
+  color: #333;
+  font-size: 15px;
+  min-height: 46px;
+  padding: 6px 15px;
+}
+
+/* --------------- Section-3 */
+.section-3 {
+  padding: 60px 0;
+}
+.section-header {
+  margin-bottom: 30px;
+}
+.section-header h6 {
+  font-size: 20px;
+  color: #fe235b;
+  font-weight: 600;
+}
+.section-header h2 {
+  font-size: 32px;
+  margin-bottom: 0;
+  font-weight: 600;
+  color: #011946;
+}
+.about-content p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  margin: 0;
+  color: #011946;
+}
+.about-content p + p {
+  margin-top: 20px;
+}
+.left {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+}
+.left li {
+  color: #011946;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.left li svg {
+  font-size: 14px;
+  color: #fe235b;
+  margin-right: 8px;
+}
+
+/* ---------------- Login page */
+.nav-2 {
+  position: relative;
+  height: 140px;
+  width: 100%;
+  background-color: #011946;
+}
+.section-login {
+  padding: 50px 0;
+}
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+.login-header {
+  margin-bottom: 20px;
+}
+.login-header h3 a {
+  color: #fe235b;
+  float: right;
+  font-size: 15px;
+  margin-top: 2px;
+}
+.login-header h3 {
+  font-size: 18px;
+  margin-bottom: 3px;
+}
+
+.login-right {
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  padding: 25px;
+}
+.text-right {
+  text-align: right !important;
+}
+.forgot-link {
+  color: #3d3d3d;
+  display: inline-block;
+  font-size: 13px;
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+.btn-primary {
+  background-color: #fd4675;
+  border: 1px solid #fd4675;
+}
+.login-button {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.login-or {
+  color: #d4d4d4;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  position: relative;
+}
+.or-line {
+  background-color: #e5e5e5;
+  height: 1px;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: block;
+}
+.span-or {
+  background-color: #fff;
+  display: block;
+  left: 50%;
+  margin-left: -20px;
+  position: absolute;
+  text-align: center;
+  top: -3px;
+  width: 42px;
+}
+@media only screen and (max-width: 991.98px) {
+  .login-left {
+    display: none;
+  }
+}

@@ -80,6 +80,10 @@ const LoginPage = () => {
                   <span className="or-line"></span>
                   <span className="span-or"> or</span>
                 </div>
+                <div className="dont-have">
+                  Don't have an account?{" "}
+                  <Link to="/register/patient">Register</Link>
+                </div>
               </Form>
             </Col>
           </Row>

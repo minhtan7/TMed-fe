@@ -42,6 +42,9 @@ import {
   faShoppingCart,
   faSearch,
   faChevronRight,
+  faMapMarkedAlt,
+  faMobileAlt,
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -79,7 +82,10 @@ library.add(
   faSmile,
   faShoppingCart,
   faSearch,
-  faChevronRight
+  faChevronRight,
+  faMapMarkedAlt,
+  faMobileAlt,
+  faEnvelope
 );
 function App() {
   return (

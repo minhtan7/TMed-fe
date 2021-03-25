@@ -17,6 +17,13 @@ const Homepage = () => {
     "Attention Deficit",
     "Diagnosis and Evaluation",
   ];
+  const childcare = [
+    "Free Ambulance Transport",
+    "Highly Qualified Doctors",
+    "24×7 Emergency Services",
+    "Leading Technology",
+    "Patient Centered Care",
+  ];
 
   const section_1 = (
     <Container>
@@ -148,11 +155,94 @@ const Homepage = () => {
       </Row>
     </Container>
   );
+
+  const section_4 = (
+    <div>
+      <Row>
+        <Col className="left-section">
+          <div className="section-header">
+            <h2 style={{ color: "white" }}>Why choose us?</h2>
+          </div>
+          <p>
+            Lorem ipsum, or lipsum as it is sometimes known, is dummy text used
+            in laying out print, graphic or web designs. The passage is
+            attributed to an unknown typesetter in the 15th century who is
+            thought to have scrambled parts of Cicero's De Finibus Bonorum et
+            Malorum for use in a type specimen book.Lorem ipsum, or lipsum as it
+            is sometimes known, is dummy text used in laying out print, graphic
+            or web designs.
+          </p>
+          <p>
+            The passage is attributed to an unknown typesetter in the 15th
+            century who is thought to have scrambled parts of Cicero's De Lorem
+            ipsum, or lipsum as it is sometimes known. The passage is attributed
+            to an unknown typesetter in the 15th century who is thought to have
+            scrambled parts of Cicero's De
+          </p>
+          <div>
+            <ul className="left">
+              {childcare.map((e) => {
+                return (
+                  <li style={{ color: "white" }}>
+                    <FontAwesomeIcon
+                      icon={["fas", "chevron-right"]}
+                      className="mr-2"
+                      size="lg"
+                    />{" "}
+                    {e}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </Col>
+        <Col></Col>
+      </Row>
+    </div>
+  );
+
+  const section_5 = (
+    <Container>
+      <Row>
+        <Col md="3" lg="3">
+          <h2>980+</h2>
+          <p>Satisfied Patients</p>
+        </Col>
+        <Col md="3" lg="3">
+          <h2>100+</h2>
+          <p>Professional Doctor</p>
+        </Col>
+        <Col md="3" lg="3">
+          <h2>100%</h2>
+          <p>Quality</p>
+        </Col>
+        <Col md="3" lg="3">
+          <h2>15+</h2>
+          <p>Year Experience</p>
+        </Col>
+      </Row>
+    </Container>
+  );
+  const section_6 = (
+    <Container>
+      <div className="section-header">
+        <h6>Meet our doctors</h6>
+        <h2>
+          Our doctors
+          <Link to="/">View all doctors</Link>
+        </h2>
+      </div>
+      <div>doctor here</div>
+    </Container>
+  );
   return (
     <div>
       <div className="section-1-banner">{section_1}</div>
       <div className="section-2">{section_2}</div>
       <div className="section-3">{section_3}</div>
+      <div className="section-4-why">{section_4}</div>
+      <div className="section-5-count">{section_5}</div>
+      <div className="section-6-doctor">{section_6}</div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const Header = () => {
   };
 
   return (
-    <div className="nav">
+    <div className="nav-change">
       <div className="nav-small">small header</div>
       <div className="nav-big">
         <Link to="/" className="nav-center">

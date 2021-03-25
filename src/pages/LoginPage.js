@@ -35,7 +35,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <div className="nav-2">fasff</div>
+      <div className="nav-2"></div>
       <div className="section-login">
         <Container>
           <Row className="">

@@ -33,6 +33,7 @@ const RegisterPage = () => {
     e.preventDefault();
     const x = { ...profile, role: name };
     dispatch(authActions.register(x));
+    console.log(x);
   };
   const onChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });

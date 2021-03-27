@@ -2,15 +2,27 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { Container, Breadcrumb, Col, Row, Tabs, Tab } from "react-bootstrap";
 import DoctorCard from "../components/DoctorCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { doctorActions } from "../redux/actions/doctor.action";
 
 const DoctorDetailPage = () => {
   const [key, setKey] = useState("home");
+  const doctor = useSelector((state) => state.doctor.currentDoctor);
+  const loading = useSelector((state) => state.doctor.loading);
+  const dispatch = useDispatch();
   const params = useParams();
   const id = params.id;
+  console.log(id);
+  useEffect(() => {
+    dispatch(doctorActions.getSingleDoctor(id));
+  }, [dispatch, id]);
+
+  console.log(doctor);
+  console.log(loading);
   return (
     <>
-      <div className="nav-2"></div>
+      <div className="nav nav-2"></div>
       <div className="sort-bar">
         <Container>
           <Row>
@@ -28,7 +40,7 @@ const DoctorDetailPage = () => {
       </div>
       <div>
         <Container>
-          <DoctorCard />
+          {doctor === null ? <h1>loading</h1> : <DoctorCard doctor={doctor} />}
 
           <Tabs
             id="controlled-tab-example"

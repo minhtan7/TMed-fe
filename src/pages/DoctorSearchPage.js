@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Row,
@@ -10,8 +10,16 @@ import {
   FormControl,
 } from "react-bootstrap";
 import DoctorCard from "../components/DoctorCard";
+import { useDispatch, useSelector } from "react-redux";
+import { doctorActions } from "../redux/actions/doctor.action";
 
-const DoctorPage = () => {
+const DoctorSearchPage = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(doctorActions.getList({ pageNum: 1, limit: 5 }));
+  }, [dispatch]);
+  const doctors = useSelector((state) => state.doctor.doctors);
+  console.log(doctors);
   return (
     <>
       {" "}
@@ -116,7 +124,15 @@ const DoctorPage = () => {
               </div>
             </Col>
             <Col md="12" lg="8" xl="9">
-              <DoctorCard />
+              <ol>
+                {!doctors ? (
+                  <h1>loading</h1>
+                ) : (
+                  doctors.map((d) => {
+                    return <DoctorCard key={d._id} doctor={d} />;
+                  })
+                )}
+              </ol>
             </Col>
           </Row>
         </Container>
@@ -125,4 +141,4 @@ const DoctorPage = () => {
   );
 };
 
-export default DoctorPage;
+export default DoctorSearchPage;

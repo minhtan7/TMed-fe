@@ -410,3 +410,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+/* ----------------------------------------- */
+/* -------------PATIENT DASHBOARD----------- */
+/* ----------------------------------------- */
+.patient-dashboard {
+  min-height: 500px;
+}

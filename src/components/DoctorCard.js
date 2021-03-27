@@ -1,18 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const DoctorCard = () => {
+const DoctorCard = ({ doctor }) => {
+  console.log(doctor);
   return (
     <div className="card">
       <div className="card-body card-doc-info">
         <div className="card-doc-left">
           <div className="card-doc-img">
-            <img src="https://unsplash.it/200/200" alt="doctor picture" />
+            <img src={doctor.avatarUrl} alt="doctor picture" />
           </div>
           <div className="card-doc-content">
-            <h4>Name</h4>
-            <p>degree</p>
-            <h5>specialization</h5>
+            <h4>{doctor.name}</h4>
+            <p>{doctor.profile.degree}</p>
+            <h5>{doctor.specialization.name}</h5>
             <div>rating</div>
           </div>
         </div>
@@ -27,7 +28,7 @@ const DoctorCard = () => {
             </div>
           </div>
           <div className="card-booking">
-            <Link to="/">View Profile</Link>
+            <Link to={`/doctor/${doctor._id}`}>View Profile</Link>
             <Link to="/">Booking Appointment</Link>
           </div>
         </div>

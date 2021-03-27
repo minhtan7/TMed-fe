@@ -5,6 +5,11 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../redux/actions/auth.action";
 import { useEffect } from "react";
+import { GoogleLogin } from "react-google-login";
+import FacebookLogin from "react-facebook-login";
+import api from "../redux/api";
+const FB_APP_ID = process.env.REACT_APP_FB_APP_ID;
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -33,6 +38,20 @@ const LoginPage = () => {
     }
   }, [history, userInfo, redirect]);
 
+  const [user, setUser] = useState();
+
+  const oauthLogin = async (user, authProvider) => {
+    console.log(user);
+    const access_token = user.accessToken;
+    const url = `/auth/login/${authProvider}`;
+    const res = await api.post(url, { access_token, user });
+    const newUser = res.data.user;
+    if (newUser) {
+      newUser.authenticated = true;
+      newUser.provider = authProvider;
+      setUser(newUser);
+    }
+  };
   return (
     <div>
       <div className="nav-2"></div>
@@ -84,6 +103,25 @@ const LoginPage = () => {
                   Don't have an account?{" "}
                   <Link to="/register/patient">Register</Link>
                 </div>
+                <Row>
+                  <div className="col-6">
+                    <GoogleLogin
+                      clientId={GOOGLE_CLIENT_ID}
+                      buttonText="Login with Google"
+                      onSuccess={(u) => oauthLogin(u, "google")}
+                      onFailure={() => console.log("Google Login Failure")}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <FacebookLogin
+                      appId={FB_APP_ID}
+                      icon="fa-facebook"
+                      fields="name,email,picture"
+                      callback={(u) => oauthLogin(u, "facebook")}
+                      onFailure={() => console.log("Facebook Login Failure")}
+                    />
+                  </div>
+                </Row>
               </Form>
             </Col>
           </Row>

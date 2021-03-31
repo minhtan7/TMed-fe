@@ -1,9 +1,11 @@
 import * as types from "../constants/auth.constant";
 
 const isAuthenticated = !!localStorage.getItem("accessToken");
+const role = localStorage.getItem("role");
 const initialState = {
   isAuthenticated,
   userInfo: null,
+  role,
 };
 
 const authReducer = (state = initialState, action) => {

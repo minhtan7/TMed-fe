@@ -19,6 +19,11 @@ const login = (profile) => async (dispatch) => {
   dispatch({ type: types.LOGIN_REQUEST });
   try {
     const res = await api.post("/auth/login", profile);
+    if (res.data.data.doctor) {
+      localStorage.setItem("role", "doctor");
+    } else if (res.data.data.patient) {
+      localStorage.setItem("role", "patient");
+    }
     dispatch({ type: types.LOGIN_SUCCESS, payload: res.data.data });
     toast.success("Login Successfully");
   } catch (err) {

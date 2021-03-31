@@ -1,27 +1,24 @@
 import * as types from "../constants/doctor.constants";
 import api from "../api";
+import { toast } from "react-toastify";
+const moment = require("moment");
 
 const getList = ({
   pageNum,
   limit,
   query,
   ownerId,
-  sortBy = { key: "createdAt", ascending: -1 },
+  genderQuery,
+  specializationsQuery,
+  sortByQuery,
 }) => async (dispatch) => {
   dispatch({ type: types.GET_ALL_DOCTOR_REQUEST });
-  console.log(pageNum, limit, query);
+  console.log(pageNum, limit, sortByQuery, genderQuery, specializationsQuery);
   try {
     let queryString = "";
     if (query) {
       /* queryString = `&title[$regex]=${query}&titile[options]=i`; */
       queryString = `&search=${query}`;
-    }
-    if (ownerId) {
-      queryString = `${queryString}&author=${ownerId}`;
-    }
-    let sortByString = "";
-    if (sortBy?.key) {
-      sortByString = `&sortBy[${sortBy.key}]=${sortBy.ascending}`;
     }
     if (!limit) {
       limit = 5;
@@ -29,8 +26,11 @@ const getList = ({
     if (!pageNum) {
       pageNum = 1;
     }
+    let genderString = `&gender=${genderQuery}`;
+    let specializationsString = `&specializations=${specializationsQuery}`;
+    let sortByString = `&sortBy=${sortByQuery}`;
     const res = await api.get(
-      `/doctor?page=${pageNum}&limit=${limit}${queryString}${sortByString}`
+      `/doctor?page=${pageNum}&limit=${limit}${queryString}${genderString}${specializationsString}${sortByString}`
     );
     console.log(res.data.data);
     dispatch({ type: types.GET_ALL_DOCTOR_SUCCESS, payload: res.data.data });
@@ -43,6 +43,7 @@ const getSingleDoctor = (id) => async (dispatch) => {
   try {
     dispatch({ type: types.GET_SINGLE_DOCTOR_REQUEST });
     const res = await api.get(`/doctor/${id}`);
+    console.log(res);
     dispatch({
       type: types.GET_SINGLE_DOCTOR_SUCCESS,
       payload: res.data.data,
@@ -52,16 +53,44 @@ const getSingleDoctor = (id) => async (dispatch) => {
   }
 };
 
-const getDoctorMe = (id) => async (dispatch) => {
+const getDoctorMe = ({ pageNum, limit, query }) => async (dispatch) => {
   try {
     dispatch({ type: types.GET_DOCTOR_ME_REQUEST });
-    const res = await api.get(`/doctor/me`);
+    let queryString;
+    if (!limit) {
+      limit = 5;
+    }
+    if (!pageNum) {
+      pageNum = 1;
+    }
+    if (query) {
+      queryString = `&search=${query}`;
+    }
+
+    const res = await api.get(
+      `/doctor/me?page=${pageNum}&limit=${limit}${queryString}`
+    );
     dispatch({
       type: types.GET_DOCTOR_ME_SUCCESS,
       payload: res.data.data,
     });
   } catch (err) {
     dispatch({ type: types.GET_DOCTOR_ME_FAILURE, payload: err });
+  }
+};
+
+const getAppointmentOfaDoc = (date, doctorId) => async (dispatch) => {
+  try {
+    date = moment(date).format("YYYY-MM-DD");
+
+    dispatch({ type: types.GET_APPOINTMENT_OF_A_DOCTOR_REQUEST });
+    const res = await api.get(`/appointment/${date}/doctor/${doctorId}`);
+    dispatch({
+      type: types.GET_APPOINTMENT_OF_A_DOCTOR_SUCCESS,
+      payload: res.data.data,
+    });
+  } catch (err) {
+    dispatch({ type: types.GET_APPOINTMENT_OF_A_DOCTOR_FAILURE, payload: err });
   }
 };
 
@@ -73,8 +102,41 @@ const acceptedAppointment = (id) => async (dispatch) => {
       type: types.POST_ACCEPTED_APPOINTMENT_SUCCESS,
       payload: res.data.data,
     });
+    toast.success("Appoinment accepted!");
+    dispatch(doctorActions.getDoctorMe());
   } catch (err) {
     dispatch({ type: types.POST_ACCEPTED_APPOINTMENT_FAILURE, payload: err });
+  }
+};
+
+const cancelAppointment = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: types.PUT_CANCEL_REQUEST });
+    let date = moment().format();
+    const res = await api.put(`/appointment/${id}/cancel`, { date });
+    dispatch({
+      type: types.PUT_CANCEL_SUCCESS,
+      payload: res.data.data,
+    });
+    toast.success("Appoinment canceled!");
+    dispatch(doctorActions.getDoctorMe());
+  } catch (err) {
+    dispatch({ type: types.PUT_CANCEL_FAILURE, payload: err });
+  }
+};
+
+const putDoctorProfile = (profile) => async (dispatch) => {
+  try {
+    dispatch({ type: types.PUT_DOCTOR_PROFILE_REQUEST });
+    const res = await api.put(`/doctor/me`, profile);
+    dispatch({
+      type: types.PUT_DOCTOR_PROFILE_SUCCESS,
+      payload: res.data.data,
+    });
+    toast.success("Profile updated!");
+    dispatch(doctorActions.getDoctorMe());
+  } catch (err) {
+    dispatch({ type: types.PUT_DOCTOR_PROFILE_FAILURE, payload: err });
   }
 };
 
@@ -83,4 +145,7 @@ export const doctorActions = {
   getSingleDoctor,
   getDoctorMe,
   acceptedAppointment,
+  putDoctorProfile,
+  cancelAppointment,
+  getAppointmentOfaDoc,
 };

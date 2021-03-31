@@ -17,6 +17,7 @@ import DoctorDetailPage from "../../pages/DoctorDetailPage";
 import DoctorDashboard from "../../pages/DoctorDashboard";
 import PatientDashboard from "../../pages/PatientDashboard";
 import BookingPage from "../../pages/BookingPage";
+import PayingPage from "../../pages/PayingPage";
 
 const PublicLayout = () => {
   return (
@@ -32,10 +33,8 @@ const PublicLayout = () => {
 
           <Route exact path="/doctor/:id" component={DoctorDetailPage} />
           <ProtectedRoute path="/booking/:id" component={BookingPage} />
-          <ProtectedRoute
-            path="/patient/dashboard/me"
-            component={PatientDashboard}
-          />
+          <ProtectedRoute path="/paying" component={PayingPage} />
+          <ProtectedRoute path="/patient/me" component={PatientDashboard} />
           <ProtectedRoute
             path="/doctor/dashboard/me"
             component={DoctorDashboard}

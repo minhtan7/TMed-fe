@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Homepage = () => {
   const [value, onChangeDate] = useState(new Date());
-
+  console.log(value);
   const effectiveTreatment1 = [
     "Eating Disorders",
     "Family Therapy for Child",

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Row,
@@ -8,18 +8,76 @@ import {
   Button,
   InputGroup,
   FormControl,
+  Form,
 } from "react-bootstrap";
 import DoctorCard from "../components/DoctorCard";
 import { useDispatch, useSelector } from "react-redux";
 import { doctorActions } from "../redux/actions/doctor.action";
+import { specializationActions } from "../redux/actions/specialization.action";
+import SearchBar from "../components/SearchBar";
+import { useHistory, useLocation } from "react-router-dom";
 
 const DoctorSearchPage = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const search = location.search;
+
+  const query = new URLSearchParams(search).get("search");
+  const genderQuery = new URLSearchParams(search).get("gender");
+  const specializationsQuery = new URLSearchParams(search).get(
+    "specializations"
+  );
+  const sortByQuery = new URLSearchParams(search).get("sortBy");
   useEffect(() => {
-    dispatch(doctorActions.getList({ pageNum: 1, limit: 5 }));
-  }, [dispatch]);
+    dispatch(
+      doctorActions.getList({
+        pageNum: 1,
+        limit: 10,
+        query,
+        genderQuery,
+        specializationsQuery,
+        sortByQuery,
+      })
+    );
+    dispatch(specializationActions.getAllSpecialization());
+  }, [dispatch, query, genderQuery, specializationsQuery, sortByQuery]);
   const doctors = useSelector((state) => state.doctor.doctors);
-  console.log(doctors);
+
+  const specializations = useSelector(
+    (state) => state.specialization.specializations
+  );
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  const [filter, setFilter] = useState({
+    gender: "all",
+    specializations: "all",
+    sortBy: "all",
+  });
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(filter);
+    history.push(
+      `/search?gender=${filter.gender}&specializations=${filter.specializations}&sortBy=${filter.sortBy}`
+    );
+  };
+  const onChange = (e) => {
+    console.log(e.target.value);
+    setFilter({
+      ...filter,
+      specializations: e.target.value.toLowerCase(),
+    });
+  };
+  const onChangeGender = (e) => {
+    setFilter({ ...filter, gender: e.target.value.toLowerCase() });
+  };
+
+  const onChangeSort = (e) => {
+    setFilter({ ...filter, sortBy: e.target.value.toLowerCase() });
+  };
+
   return (
     <>
       {" "}
@@ -37,15 +95,7 @@ const DoctorSearchPage = () => {
               </h2>
             </Col>
             <Col md="4" xs="12" className="d-none d-md-block ">
-              <div>
-                <span>Sort by</span>
-                <select className="sort-filter">
-                  <option value="volvo">Select</option>
-                  <option value="saab">Rating</option>
-                  <option value="mercedes">Popular</option>
-                  <option value="audi">Latest</option>
-                </select>
-              </div>
+              <SearchBar />
             </Col>
           </Row>
         </Container>
@@ -56,70 +106,65 @@ const DoctorSearchPage = () => {
             <Col>
               <div>
                 <div className="search-filter">
-                  <Card>
-                    <Card.Header>Search Filter</Card.Header>
-                    <Card.Body>
-                      <Card.Title>Gender</Card.Title>
-                      <Card.Text>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexCheckDefault"
-                          >
-                            Male Doctor
-                          </label>
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexCheckDefault"
-                          >
-                            Female Doctor
-                          </label>
-                        </div>
-                      </Card.Text>
-                      <Card.Title>Specialization</Card.Title>
-                      <Card.Text>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexCheckDefault"
-                          >
-                            Hemotology
-                          </label>
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexCheckDefault"
-                          >
-                            Pneumonary
-                          </label>
-                        </div>
-                      </Card.Text>
-                      <Button variant="primary">Search</Button>
-                    </Card.Body>
-                  </Card>{" "}
+                  <Form onSubmit={onSubmit}>
+                    <Card>
+                      <Card.Header>Search Filter</Card.Header>
+                      <Card.Body>
+                        <Card.Title>Sort by</Card.Title>
+                        <Card.Text>
+                          <div>
+                            <Form.Group controlId="exampleForm.ControlSelect1">
+                              <Form.Control as="select" onChange={onChangeSort}>
+                                <option value="all">Select</option>
+                                <option value="rating">Rating</option>
+                              </Form.Control>
+                            </Form.Group>
+                          </div>
+                        </Card.Text>
+                        <Card.Title>Gender</Card.Title>
+                        <Card.Text>
+                          <div class="form-check">
+                            <div>
+                              <Form.Group controlId="exampleForm.ControlSelect1">
+                                <Form.Control
+                                  as="select"
+                                  onChange={onChangeGender}
+                                >
+                                  <option value="all">All Gender</option>
+                                  <option>Female</option>
+                                  <option>Male</option>
+                                </Form.Control>
+                              </Form.Group>
+                            </div>
+                          </div>
+                        </Card.Text>
+                        <Card.Title>Specialization</Card.Title>
+                        <Card.Text>
+                          <div class="form-check">
+                            <Form.Group controlId="exampleForm.ControlSelect1">
+                              <Form.Control as="select" onChange={onChange}>
+                                <option value="all">All Specializations</option>
+                                {!specializations ? (
+                                  <h1>Loading</h1>
+                                ) : (
+                                  specializations.map((s) => {
+                                    return (
+                                      <option>
+                                        {capitalizeFirstLetter(s.name)}
+                                      </option>
+                                    );
+                                  })
+                                )}
+                              </Form.Control>
+                            </Form.Group>
+                          </div>
+                        </Card.Text>
+                        <Button variant="primary" type="submit">
+                          Search
+                        </Button>
+                      </Card.Body>
+                    </Card>{" "}
+                  </Form>
                 </div>
               </div>
             </Col>

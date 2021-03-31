@@ -47,6 +47,10 @@ import {
   faMapMarkedAlt,
   faMobileAlt,
   faEnvelope,
+  faUserCircle,
+  faUniversity,
+  faUserGraduate,
+  faBirthdayCake,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -89,7 +93,11 @@ library.add(
   faChevronRight,
   faMapMarkedAlt,
   faMobileAlt,
-  faEnvelope
+  faEnvelope,
+  faUserCircle,
+  faUniversity,
+  faUserGraduate,
+  faBirthdayCake
 );
 function App() {
   return (

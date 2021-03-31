@@ -1,36 +1,55 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import StarRatings from "react-star-ratings";
+import { Button } from "react-bootstrap";
 
 const DoctorCard = ({ doctor }) => {
-  console.log(doctor);
+  const truncateText = (text, textLength) => {
+    if (text.length > 20) {
+      return text.slice(0, textLength - 1) + "...";
+    } else return text;
+  };
   return (
-    <div className="card">
-      <div className="card-body card-doc-info">
-        <div className="card-doc-left">
-          <div className="card-doc-img">
-            <img src={doctor.avatarUrl} alt="doctor picture" />
-          </div>
-          <div className="card-doc-content">
-            <h4>{doctor.name}</h4>
-            <p>{doctor.profile.degree}</p>
-            <h5>{doctor.specialization.name}</h5>
-            <div>rating</div>
-          </div>
+    <div className="card card-doc">
+      <div className="card-doc-info">
+        <div className="card-heart">
+          <FontAwesomeIcon icon={["fas", "heart"]} className="mr-2" size="lg" />
         </div>
-        <div className="card-doc-right">
-          <div>
-            <div>
-              <ul>
-                <li>rating: %</li>
-                <li>comment: %</li>
-                <li>price: %</li>
-              </ul>
-            </div>
-          </div>
-          <div className="card-booking">
-            <Link to={`/doctor/${doctor._id}`}>View Profile</Link>
-            <Link to="/">Booking Appointment</Link>
-          </div>
+        <figure className="figure ">
+          <Link to={`/doctor/${doctor._id}`}>
+            <img
+              src={doctor.avatarUrl}
+              alt=""
+              className="figure-img img-fluid rounded"
+            />
+          </Link>
+        </figure>
+        <small>{doctor.specialization.name}</small>
+        <Link to={`/doctor/${doctor._id}`}>
+          <h3>Dr. {doctor.name}</h3>
+        </Link>
+
+        <p>{truncateText(doctor.profile.about, 170)}</p>
+        <div>
+          <StarRatings
+            rating={doctor.avgRating}
+            starRatedColor="#ffa41b"
+            changeRating={() => console.log("haha")}
+            numberOfStars={5}
+            name="rating"
+            starDimension="20px"
+            starSpacing="0"
+          />{" "}
+          <span>({doctor.reviews.length})</span>
+        </div>
+        <div className="card-button">
+          <Button as={Link} to={`/doctor/${doctor._id}`}>
+            View Profile
+          </Button>
+          <Button as={Link} to={`/booking/${doctor._id}`}>
+            Book now
+          </Button>
         </div>
       </div>
     </div>

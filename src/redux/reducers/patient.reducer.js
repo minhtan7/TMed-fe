@@ -4,6 +4,7 @@ const initialState = {
   currentPatient: null,
   loading: false,
   totalPages: 1,
+  appointment: {},
 };
 
 const patientReducer = (state = initialState, action) => {
@@ -19,6 +20,51 @@ const patientReducer = (state = initialState, action) => {
       };
     case types.GET_SINGLE_PATIENT_FAILURE:
       return { ...state, loading: false };
+
+    case types.PUT_PATIENT_PROFILE_REQUEST:
+      return { ...state, loading: true };
+    case types.PUT_PATIENT_PROFILE_SUCCESS:
+      return {
+        ...state,
+        currentPatient: payload.doctor,
+        loading: false,
+      };
+    case types.PUT_PATIENT_PROFILE_FAILURE:
+      return { ...state, loading: false };
+
+    case types.PUT_CANCEL_REQUEST:
+      return { ...state, loading: true };
+    case types.PUT_CANCEL_SUCCESS:
+      return {
+        ...state,
+        appointment: payload.appointment,
+        loading: false,
+      };
+    case types.PUT_CANCEL_FAILURE:
+      return { ...state, loading: false };
+
+    case types.POST_REQUEST_APPOINTMENT_IS_PAID_FALSE_REQUEST:
+      return { ...state, loading: true };
+    case types.POST_REQUEST_APPOINTMENT_IS_PAID_FALSE_SUCCESS:
+      return {
+        ...state,
+        appointment: payload.appointment,
+        loading: false,
+      };
+    case types.POST_REQUEST_APPOINTMENT_IS_PAID_FALSE_FAILURE:
+      return { ...state, loading: false };
+
+    case types.PUT_RESERVATION_FEE_REQUEST:
+      return { ...state, loading: true };
+    case types.PUT_RESERVATION_FEE_SUCCESS:
+      return {
+        ...state,
+        appointment: payload.appointment,
+        loading: false,
+      };
+    case types.PUT_RESERVATION_FEE_FAILURE:
+      return { ...state, loading: false };
+
     default:
       return state;
   }

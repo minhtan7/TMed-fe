@@ -26,6 +26,7 @@ const login = (profile) => async (dispatch) => {
     }
     dispatch({ type: types.LOGIN_SUCCESS, payload: res.data.data });
     toast.success("Login Successfully");
+    document.location.href = "/";
   } catch (err) {
     dispatch({ type: types.LOGIN_FAILURE, payload: err });
   }
@@ -33,8 +34,9 @@ const login = (profile) => async (dispatch) => {
 const logout = () => (dispatch) => {
   delete api.defaults.headers.common["Authorization"];
   localStorage.setItem("accessToken", "");
-  dispatch({ type: types.LOGOUT_SUCCESS, payload: null });
+  localStorage.setItem("role", "");
   document.location.href = "/";
+  dispatch({ type: types.LOGOUT_SUCCESS, payload: null });
 };
 
 export const authActions = {

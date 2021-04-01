@@ -24,18 +24,22 @@ const SearchBar = ({ classes }) => {
     setSearch(e.target.value);
   };
   return (
-    <form style={{ width: "100%", position: "relative" }} onSubmit={onSubmit}>
-      <input
-        /* className={`${classes}`} */
-        placeholder="What are you looking for?"
-        onChange={onChange}
-      />
-      <FontAwesomeIcon
-        icon={["fas", "search"]}
-        className="mr-2 nav-search-icon"
-        size="lg"
-      />
-    </form>
+    <div className="nav-search" style={{ width: "100%" }}>
+      <form style={{ width: "100%", position: "relative" }} onSubmit={onSubmit}>
+        <input
+          /* className={`${classes}`} */
+          placeholder="Who are you looking for?"
+          onChange={onChange}
+          style={{ width: "100%" }}
+        />
+        <FontAwesomeIcon
+          icon={["fas", "search"]}
+          className="mr-2 nav-search-icon"
+          size="lg"
+          style={{ transform: "translate(0,-50%)" }}
+        />
+      </form>
+    </div>
   );
 };
 

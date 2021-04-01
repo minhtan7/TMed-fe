@@ -14,7 +14,7 @@ const Footer = () => {
             className="mr-2"
             size="lg"
           />
-          <p>address</p>
+          <p>175 Vo Van Tan, District 3, HCMC</p>
         </div>
         <div className="footer-info">
           <FontAwesomeIcon
@@ -22,7 +22,7 @@ const Footer = () => {
             className="mr-2"
             size="lg"
           />
-          <p>phone</p>
+          <p>(+84) 378 557 955</p>
         </div>
         <div className="footer-info">
           {" "}
@@ -31,7 +31,7 @@ const Footer = () => {
             className="mr-2"
             size="lg"
           />
-          <p>email</p>
+          <p>tan.vopm@gmail.com</p>
         </div>
       </div>
     </>
@@ -61,8 +61,9 @@ const Footer = () => {
             <Col>
               <div className="footer-logo">
                 <img
-                  src="https://doccure-laravel.dreamguystech.com/template-pediatric/public/assets/img/logo-white.png"
+                  src="https://res.cloudinary.com/tanvo/image/upload/v1617216126/tmed-logo.white_eskth4.png"
                   alt=""
+                  style={{ width: "100%" }}
                 />
               </div>
               <div className="footer-about">
@@ -78,7 +79,7 @@ const Footer = () => {
           </Row>
         </Container>
       </div>
-      <div className="footer-bottom"></div>
+      <div className="footer-bottom">@ Copyright Tan Vo 2021</div>
     </div>
   );
 };

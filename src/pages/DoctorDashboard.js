@@ -7,6 +7,9 @@ import SearchBar from "../components/SearchBar";
 import { doctorActions } from "../redux/actions/doctor.action";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { specializationActions } from "../redux/actions/specialization.action";
+import Pagination from "react-js-pagination";
+import HashLoader from "react-spinners/HashLoader";
+
 const moment = require("moment");
 
 const DoctorDashboard = () => {
@@ -15,6 +18,7 @@ const DoctorDashboard = () => {
   const specializations = useSelector(
     (state) => state.specialization.specializations
   );
+  const totalPages = useSelector((state) => state.doctor.totalPages);
   const loading = useSelector((state) => state.doctor.loading);
   const dispatch = useDispatch();
 
@@ -22,7 +26,7 @@ const DoctorDashboard = () => {
   const location = useLocation();
   const search = location.search;
 
-  const query = new URLSearchParams(search).get("search");
+  let query = new URLSearchParams(search).get("search");
 
   const [profile, setProfile] = useState({
     email: "",
@@ -34,6 +38,11 @@ const DoctorDashboard = () => {
     about: "",
     avatarUrl: "",
   });
+
+  const [pageNum, setPageNum] = useState(1);
+  const handlePageChange = (pageNumber) => {
+    setPageNum(pageNumber);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -54,9 +63,9 @@ const DoctorDashboard = () => {
   };
 
   useEffect(() => {
-    dispatch(doctorActions.getDoctorMe({ pageNum: 1, limit: 10, query }));
+    dispatch(doctorActions.getDoctorMe({ pageNum, limit: 10, query }));
     dispatch(specializationActions.getAllSpecialization());
-  }, [dispatch, query]);
+  }, [dispatch, query, pageNum]);
 
   const handleAccepted = (id) => {
     dispatch(doctorActions.acceptedAppointment(id));
@@ -81,6 +90,7 @@ const DoctorDashboard = () => {
   const onChangeSearch = (e) => {
     setSearchName(e.target.value);
   };
+
   return (
     <>
       <div className="nav nav-2"></div>
@@ -88,7 +98,9 @@ const DoctorDashboard = () => {
       <div className="patient-dashboard">
         <Container>
           {doctor === null ? (
-            <h1> loading</h1>
+            <div className="d-flex justify-content-center">
+              <HashLoader color="#74d1c6" />
+            </div>
           ) : (
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
               <Row>
@@ -106,14 +118,14 @@ const DoctorDashboard = () => {
                   </Nav>
                 </Col>
                 <Col sm={9}>
-                  <div>
+                  <div className="d-flex justify-content-between nav-search">
                     <form
-                      style={{ width: "100%", position: "relative" }}
+                      style={{ position: "relative" }}
                       onSubmit={onSubmitSearch}
                     >
                       <input
                         /* className={`${classes}`} */
-                        placeholder="What are you looking for?"
+                        placeholder="Patient name"
                         onChange={onChangeSearch}
                       />
                       <FontAwesomeIcon
@@ -122,6 +134,21 @@ const DoctorDashboard = () => {
                         size="lg"
                       />
                     </form>
+                    <div>
+                      <Pagination
+                        activePage={pageNum}
+                        itemsCountPerPage={10}
+                        totalItemsCount={totalPages * 10}
+                        pageCount={totalPages}
+                        pageRangeDisplayed={5}
+                        onChange={handlePageChange}
+                        itemClass={"paginationBttns"}
+                        itemClassLast={"previousBttn"}
+                        itemClassNext={"nextBttn"}
+                        disabledClass={"paginationDisabled"}
+                        activeClass={"paginationActive"}
+                      />
+                    </div>
                   </div>
                   <Tab.Content>
                     <Tab.Pane eventKey="first">

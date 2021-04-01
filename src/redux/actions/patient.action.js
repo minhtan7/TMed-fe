@@ -20,6 +20,7 @@ const getPatientMe = (id) => async (dispatch) => {
 const putPatientProfile = (profile) => async (dispatch) => {
   try {
     dispatch({ type: types.PUT_PATIENT_PROFILE_REQUEST });
+    console.log("profile", profile);
     const res = await api.put(`/patient/me`, profile);
     dispatch({
       type: types.PUT_PATIENT_PROFILE_SUCCESS,
@@ -77,13 +78,16 @@ const requestAppointmentIsPaidFalse = (doctorId, date, slot) => async (
 const requestAppointment = (status, appointmentId) => async (dispatch) => {
   try {
     dispatch({ type: types.PUT_RESERVATION_FEE_REQUEST });
-    const res = await api.put(`/appointment`, { status, appointmentId });
-    console.log(res);
-    dispatch({
-      type: types.PUT_RESERVATION_FEE_SUCCESS,
-      payload: res.data.data,
-    });
-    toast.success("Appoinment request created!");
+    if (status === "COMPLETED") {
+      const res = await api.put(`/appointment`, { status, appointmentId });
+      console.log(res);
+      dispatch({
+        type: types.PUT_RESERVATION_FEE_SUCCESS,
+        payload: res.data.data,
+      });
+      toast.success("Appoinment request created!");
+      document.location.href = "/patient/me";
+    } else toast.fail(status);
 
     /* dispatch(patientActions.getPatientMe()); */
   } catch (err) {

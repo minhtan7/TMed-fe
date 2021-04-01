@@ -1,5 +1,6 @@
 :root {
   --purple: #3f4079;
+  --dark-purple: #1e2085;
   --green: #74d1c6;
   --pink: #e74e84;
 }
@@ -10,12 +11,41 @@ body {
   font-weight: 400;
   line-height: 1.5;
   font-size: 1rem;
+  width: 1440px;
   /* background-color: black;
   color: white; */
 }
 html {
   scroll-behavior: smooth;
 }
+
+.back-top {
+  position: fixed;
+  right: 20px;
+  top: 500px;
+  z-index: 5;
+  border: 1px dotted var(--green);
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  color: var(--green);
+}
+.back-top svg {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -49%);
+  top: 50%;
+}
+.back-top a {
+  text-decoration: none;
+}
+.back-top a:hover {
+  color: var(--purple);
+}
+.back-top a.active {
+  color: var(--pink);
+}
+
 /* -------------- Navbar     */
 .nav-change {
   position: absolute;
@@ -32,19 +62,24 @@ html {
   font-weight: 400;
 }
 .nav-big {
+  max-width: 1440px;
   width: 100%;
-  background-color: #f6faff61;
+  background-color: var(--purple);
   height: 85px;
   display: flex;
   justify-content: space-between;
   padding: 0 30px;
+  opacity: 0.7;
 }
 .nav-big-wrapper {
   display: flex;
   margin: 0;
   margin-left: auto;
 }
-
+.nav-big-wrapper > .dropdown {
+  display: flex;
+  align-items: center;
+}
 .nav-big-main {
   display: flex;
   margin: auto;
@@ -54,12 +89,27 @@ html {
   text-transform: capitalize;
 }
 
-.nav-big-main li {
+.nav-big-main a {
   margin: auto;
   margin-right: 30px;
   list-style: none;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
+  color: white !important;
+}
+.dropdown-menu {
+  left: -100% !important;
+}
+
+.dropdown-menu a {
+  color: black !important;
+}
+.nav-link {
+  color: white;
+}
+.nav-big-main li a {
+  text-decoration: none;
+  color: white;
 }
 .login-btn {
   border-color: white !important;
@@ -79,6 +129,9 @@ html {
   margin: auto;
   margin-left: 20px;
 }
+.login-btn-nav > .active {
+  background-color: none !important;
+}
 .nav-center {
   margin: auto 0;
   width: 160px;
@@ -93,7 +146,7 @@ html {
 
 /* -------------- Banner section */
 .section-1-banner {
-  background-image: url("https://doccure-laravel.dreamguystech.com/template-pediatric/public/assets/img/search-bg.png");
+  background-image: url("https://res.cloudinary.com/tanvo/image/upload/v1617250977/hollie-santos-aUtvHsu8Uzk-unsplash_ge4t7t.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -102,12 +155,16 @@ html {
   padding: 150px 0px 130px;
 }
 .banner-wrapper {
-  padding-top: 120px;
-  margin: auto;
-  color: white;
+  margin: 0;
+  padding: 30px;
+  border-radius: 20px;
+  color: var(--purple);
+  background-color: white;
+  width: 50%;
+  opacity: 0.8;
 }
 .banner-btn {
-  background-color: #fe235b;
+  background-color: var(--pink);
   color: #ffffff;
   font-size: 18px;
   border-radius: 5px;
@@ -145,6 +202,9 @@ html {
   min-height: 46px;
   padding: 6px 15px;
 }
+.form-profile {
+  padding: 6px 20px;
+}
 
 /* --------------- Section-3 */
 .section-3 {
@@ -155,14 +215,14 @@ html {
 }
 .section-header h6 {
   font-size: 20px;
-  color: #fe235b;
+  color: var(--pink);
   font-weight: 600;
 }
 .section-header h2 {
   font-size: 32px;
   margin-bottom: 0;
   font-weight: 600;
-  color: #011946;
+  color: var(--dark-purple);
 }
 .about-content p {
   font-size: 16px;
@@ -180,22 +240,19 @@ html {
   padding: 0;
 }
 .left li {
-  color: #011946;
+  color: var(--dark-purple);
   font-weight: 500;
   margin-bottom: 15px;
 }
 .left li svg {
   font-size: 14px;
-  color: #fe235b;
+  color: var(--pink);
   margin-right: 8px;
 }
 
 /* ---------------- Login page */
 .nav-2 {
-  position: relative;
-  height: 140px;
-  width: 100%;
-  background-color: #011946;
+  margin-top: 100px;
 }
 .section-login {
   padding: 50px 0;
@@ -324,16 +381,56 @@ html {
   margin: 10px 0;
   color: #0e224b;
 }
+.homepage-card {
+  position: relative;
+  padding: 30px;
+  margin: 0 20px;
+  transition-duration: 0.3s;
+}
+.homepage-card:hover {
+  padding: 10px;
+}
+
+.homepage-card img {
+  max-height: 350px;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}
+.hompepage-card-content {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.hompepage-card-content:hover {
+  opacity: 0.8;
+  color: white;
+  background-color: var(--purple);
+  transition: ease-in-out;
+}
 
 /* ------------------ Footer */
+.footer-bottom {
+  padding: 30px 0;
+  margin: 0 150px;
+  font-size: 13px;
+}
 .footer {
-  background-color: #122852;
+  background-color: var(--purple);
   color: white;
   width: 1440px;
-  margin-top: 50px;
+}
+.footer-title {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.footer-logo {
+  width: 10rem;
+  margin-bottom: 20px;
 }
 .footer-top {
-  padding: 60px 0;
+  padding: 60px 0 0 0;
 }
 .footer-address svg {
   margin-right: 15px !important;
@@ -348,7 +445,7 @@ html {
   display: flex;
 }
 .submit-email-btn {
-  background-color: #122852;
+  background-color: var(--pink);
   color: white;
   font-weight: 400;
   border: 2px solid white !important;
@@ -357,7 +454,7 @@ html {
   transform: translate(-50%);
 }
 .left-section {
-  background-color: #0e2550;
+  background-color: var(--purple);
   opacity: 0.9;
   width: 50%;
   padding: 60px 0 100px;
@@ -366,7 +463,7 @@ html {
 }
 
 /* ----------------------------- */
-/* ---------DOCTOR PAGE--------- */
+/* ---------DOCTOR DETAIL PAGE--------- */
 /* ----------------------------- */
 
 /* ---- sort-bar */
@@ -403,6 +500,33 @@ html {
 }
 
 .search-fitler {
+}
+#review {
+  margin: 20px 0;
+  width: ;
+}
+.review-avg {
+  background-color: var(--purple);
+  padding: 20px 10px;
+  color: white;
+  text-align: center;
+  border-radius: 15px;
+}
+.review-avg strong {
+  font-size: 50px;
+}
+.review-avg span {
+  font-size: 15px;
+  position: absolute;
+}
+.table td {
+  padding: 5px 10px;
+}
+.review-star small {
+  font-weight: 600;
+}
+.review-star {
+  line-height: 1.5;
 }
 /* ------- CARD DOC INFO */
 .card-doc {
@@ -470,6 +594,35 @@ html {
 .nav-item a {
   color: black;
 }
+.dashboard-img {
+  padding: 20px;
+  display: flex;
+}
+.dashboard-img img {
+  margin-right: 20px;
+}
+.dashboard-img button {
+  margin: auto 0;
+  border-radius: 20px;
+  padding: 10px 15px;
+}
+.dashboard-img button:hover {
+  color: white;
+  background-color: var(--purple);
+  position: relative;
+}
+.dashboard-img button:hover::after {
+  content: "Max size of 2MB";
+  background-color: white;
+  color: black;
+  border: 1px solid var(--green);
+  position: absolute;
+  top: 120%;
+  left: 10%;
+  width: 100px;
+  padding: 5px;
+  border-radius: 20px;
+}
 
 /* ----------------------------------------- */
 /* -------------DOCTOR DASHBOARD----------- */
@@ -534,7 +687,7 @@ html {
   color: rgba(0, 0, 0, 0.26);
   box-shadow: none;
   background-color: rgba(0, 0, 0, 0.12);
-  opacity: 0.7;
+  opacity: 0.9;
 }
 .slot-request {
   color: #fff;
@@ -711,4 +864,109 @@ html {
   text-align: center;
   width: 100%;
   border-radius: 20px;
+}
+
+/* ----------------------------- */
+/* ---------PAGINATION--------- */
+/* ----------------------------- */
+
+.paginationBttns {
+  /* width: 80%;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center; */
+}
+
+.paginationBttns a {
+  color: rgba(0, 0, 0, 0.87);
+  height: 40px;
+  margin: 0 3px;
+  padding: 0 6px;
+  font-size: 0.875rem;
+  min-width: 32px;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
+  border-radius: 16px;
+  letter-spacing: 0.01071em;
+
+  align-items: center;
+}
+
+.paginationBttns a:hover {
+  /* color: white;
+  background-color: #2b2eff; */
+}
+
+.paginationActive a {
+  display: inline-block;
+  padding: 0 3px;
+  border: 1px solid white;
+  width: 25px;
+  height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: var(--green);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.paginationDisabled a {
+  color: grey;
+  background-color: grey;
+}
+.pagination {
+  justify-content: center;
+}
+.nav-search input {
+  padding: 5px 10px;
+  border: 1px solid gray;
+  border-radius: 20px;
+}
+.nav-search input:focus {
+  outline: none;
+}
+.nav-search svg {
+  position: absolute;
+  right: 0;
+  transform: translate(0, -70%);
+  top: 50%;
+}
+
+/* ----------------------------- */
+/* ---------NOT FOUND PAGE--------- */
+/* ----------------------------- */
+
+.not-found {
+  background-image: url("https://res.cloudinary.com/tanvo/image/upload/v1617269251/marcos-paulo-prado-_aRzwAI1ZeM-unsplash_3_duaaxi.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 500px;
+  position: relative;
+  padding: 150px 0px 130px;
+  box-shadow: inset 0 0 0 1000px rgb(0 0 0 / 40%);
+}
+
+.not-found p {
+  color: white;
+}
+.error {
+  color: white;
+}
+.error h1 {
+  font-size: 100px;
+  margin-right: 20px;
+  transform: translate(0, 10%);
+}
+.error svg {
+  font-size: 100px;
+  color: var(--pink);
+}
+.error span {
+  margin: 0 auto;
 }

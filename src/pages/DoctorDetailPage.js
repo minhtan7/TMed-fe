@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { doctorActions } from "../redux/actions/doctor.action";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HashLoader from "react-spinners/HashLoader";
 
 const DoctorDetailPage = () => {
   const [key, setKey] = useState("home");
@@ -73,7 +74,7 @@ const DoctorDetailPage = () => {
                 src={doctor.avatarUrl}
                 alt=""
                 className="figure-img img-fluid"
-                style={{ width: "260px" }}
+                style={{ width: "260px", borderRadius: "10px" }}
               />
             </figure>
           </Col>
@@ -116,23 +117,25 @@ const DoctorDetailPage = () => {
     <>
       <div className="nav nav-2"></div>
       {doctor === null ? (
-        <h1>loading</h1>
+        <div className="d-flex justify-content-center">
+          <HashLoader color="#74d1c6" />
+        </div>
       ) : (
         <>
           <div className="sort-bar">
             <Container>
               <Row>
                 <Col xl="8" lg="8">
-                  <Row>
+                  {/* <Row>
                     <Col md="8" xs="12">
                       <Breadcrumb className="page-breadcrumb">
                         <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
                         <Breadcrumb.Item active>Doctor Profile</Breadcrumb.Item>
                       </Breadcrumb>
                     </Col>
-                  </Row>
+                  </Row> */}
 
-                  <Nav className="mr-auto sticky-top review-nav">
+                  <Nav className="mr-auto  review-nav">
                     <Nav.Link href="#general">General Info</Nav.Link>
                     <Nav.Link href="#review">Reviews</Nav.Link>
                   </Nav>
@@ -205,11 +208,23 @@ const DoctorDetailPage = () => {
                         </span>
                       </div>
                     </div>
+                    <hr />
                     <div id="review">
                       <Row>
                         <Col lg="3">
-                          <div>
-                            <strong>{doctor.avgRating}fds</strong>
+                          <div className="review-avg">
+                            <div style={{ position: "relative" }}>
+                              <strong>3 </strong>
+                              <span>
+                                <FontAwesomeIcon
+                                  icon={["fas", "star"]}
+                                  className="mr-2"
+                                  size="lg"
+                                />
+                              </span>
+                            </div>
+
+                            <div>Based on {doctor.reviews.length} reviews</div>
                           </div>
                         </Col>
                         <Col lg="9">
@@ -223,17 +238,17 @@ const DoctorDetailPage = () => {
                                 starPercentage.map((s, index) => {
                                   return (
                                     <tr>
-                                      <td style={{ width: "25%" }}>
-                                        {5 - index} star
-                                      </td>
                                       <td>
                                         <ProgressBar
                                           /* bsPrefix="progress-bar" */ animated
                                           now={s}
                                         />
                                       </td>
-                                      <td style={{ width: "25%" }}>
-                                        {s.toFixed(1)}%
+                                      <td
+                                        className="review-star"
+                                        style={{ width: "25%" }}
+                                      >
+                                        <small> {5 - index} stars</small>
                                       </td>
                                     </tr>
                                   );

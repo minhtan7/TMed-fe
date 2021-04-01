@@ -26,7 +26,7 @@ const patientReducer = (state = initialState, action) => {
     case types.PUT_PATIENT_PROFILE_SUCCESS:
       return {
         ...state,
-        currentPatient: payload.doctor,
+        currentPatient: payload.patient,
         loading: false,
       };
     case types.PUT_PATIENT_PROFILE_FAILURE:

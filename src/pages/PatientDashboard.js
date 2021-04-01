@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { patientActions } from "../redux/actions/patient.action";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HashLoader from "react-spinners/HashLoader";
+import DatePicker from "react-date-picker";
 const moment = require("moment");
 
 const PatientDashboard = () => {
@@ -21,7 +23,8 @@ const PatientDashboard = () => {
   const patient = useSelector((state) => state.patient.currentPatient);
   const loading = useSelector((state) => state.patient.loading);
   const dispatch = useDispatch();
-  const [profile, setProfile] = useState({
+  const [dob, setDob] = useState(new Date());
+  let [profile, setProfile] = useState({
     parentName: "",
     phone: "",
     email: "",
@@ -30,10 +33,23 @@ const PatientDashboard = () => {
     gender: "",
     avatarUrl: "",
   });
-
+  console.log(dob);
   useEffect(() => {
     dispatch(patientActions.getPatientMe());
   }, [dispatch]);
+  let formatPhoneNumber = (str) => {
+    //Filter only numbers from the input
+    let cleaned = ("" + str).replace(/\D/g, "");
+
+    //Check if the input is of correct length
+    let match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{3})$/);
+    if (match) {
+      return (
+        "(+" + match[1] + ") " + match[2] + " " + match[3] + " " + match[4]
+      );
+    }
+    return null;
+  };
 
   const myWidget = window.cloudinary.createUploadWidget(
     {
@@ -43,7 +59,7 @@ const PatientDashboard = () => {
     (error, result) => {
       if (!error && result && result.event === "success") {
         console.log("Done! Here is the image info: ", result.info);
-        setProfile(...profile, ("avatarUrl": result.info.url));
+        setProfile({ ...profile, avatarUrl: result.info.url });
       }
     }
   );
@@ -75,6 +91,7 @@ const PatientDashboard = () => {
       gender: "",
       avatarUrl: "",
     });
+    e.target.reset();
   };
   const onChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -89,8 +106,10 @@ const PatientDashboard = () => {
 
       <div className="patient-dashboard">
         <Container fluid>
-          {patient === null ? (
-            <h1> loading</h1>
+          {patient === null || patient === undefined ? (
+            <div className="d-flex justify-content-center">
+              <HashLoader color="#74d1c6" />
+            </div>
           ) : (
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
               <Row>
@@ -105,7 +124,7 @@ const PatientDashboard = () => {
                         />
                       </div>
                       <div className="patient-info">
-                        <h3>{patient.children.childName}</h3>
+                        <h3>Child Name: {patient.children.childName}</h3>
                         <div>
                           <FontAwesomeIcon
                             icon={["fas", "birthday-cake"]}
@@ -113,6 +132,16 @@ const PatientDashboard = () => {
                             size="lg"
                           />{" "}
                           {moment(patient.children.dob).format("Do MMM YYYY")}
+                        </div>
+                        <div style={{ marginTop: "20px" }}>
+                          <h3>Parent name: {patient.name}</h3>
+                          <p>
+                            Email: <span>{patient.email}</span>
+                          </p>
+                          <p>
+                            Phone:{" "}
+                            <span>{formatPhoneNumber(patient.phone)}</span>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -132,50 +161,59 @@ const PatientDashboard = () => {
                           <tr>
                             <th>Doctor</th>
                             <th>Appt date </th>
-                            <th>Booking date</th>
                             <th>Amount</th>
                             <th>Reservation fee</th>
                             <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {patient.appointments.map((a) => {
-                            return (
-                              <tr key={a._id}>
-                                <td>{a.doctor.name}</td>
-                                <td>{moment(a.date).format("Do MMM YYYY")}</td>
-                                <td>{moment(a.createdAt).format("Do MMM")}</td>
-                                <td>$20</td>
-                                <td>$5</td>
-                                <td> {a.status}</td>
-                                <td>
-                                  <div onClick={() => handleCancel(a._id)}>
-                                    <FontAwesomeIcon
-                                      icon={["fas", "minus-circle"]}
-                                      className="mr-2"
-                                      size="lg"
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                          {patient !== undefined &&
+                            patient.appointments.map((a) => {
+                              return (
+                                <tr key={a._id}>
+                                  <td>{a.doctor.name}</td>
+                                  <td>
+                                    {moment(a.date).format("Do MMM YYYY")}
+                                  </td>
+                                  <td>$20</td>
+                                  <td>$5</td>
+                                  <td> {a.status}</td>
+                                  <td>
+                                    <div
+                                      onClick={() => handleCancel(a._id)}
+                                      className="cancel-but"
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={["fas", "minus-circle"]}
+                                        className="mr-2"
+                                        size="lg"
+                                      />
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </Table>
                     </Tab.Pane>
                     <Tab.Pane eventKey="second">
-                      <div>Basic information</div>
                       <div>
-                        <div>
-                          <div style={{ display: "flex" }}>
-                            <img src={patient.avatarUrl} />
-                            <div> Upload</div>
+                        <div className="dashboard-img">
+                          <img src={patient.avatarUrl} />
 
-                            <Button onClick={() => myWidget.open()}>
-                              Open widget{" "}
-                            </Button>
-                          </div>
-                          <Form onSubmit={onSubmit}>
+                          <Button onClick={() => myWidget.open()}>
+                            <span>
+                              <FontAwesomeIcon
+                                icon={["fas", "upload"]}
+                                className="mr-2"
+                                size="lg"
+                              />
+                            </span>
+                            Open widget{" "}
+                          </Button>
+                        </div>
+                        <Form onSubmit={onSubmit}>
+                          <div className="form-profile">
                             <Row>
                               <Col>
                                 <Form.Group>
@@ -184,6 +222,7 @@ const PatientDashboard = () => {
                                     name="parentName"
                                     placeholder="Parent Name"
                                     onChange={onChange}
+                                    required
                                   />
                                 </Form.Group>
                               </Col>
@@ -193,6 +232,7 @@ const PatientDashboard = () => {
                                     type="email"
                                     name="email"
                                     placeholder="Enter Email"
+                                    required
                                     onChange={onChange}
                                   />
                                 </Form.Group>
@@ -206,6 +246,7 @@ const PatientDashboard = () => {
                                     name="phone"
                                     placeholder="Enter your phone number"
                                     onChange={onChange}
+                                    required
                                   />
                                 </Form.Group>
                               </Col>
@@ -219,6 +260,7 @@ const PatientDashboard = () => {
                                     name="childName"
                                     placeholder="Child name"
                                     onChange={onChange}
+                                    required
                                   />
                                 </Form.Group>
                               </Col>
@@ -228,6 +270,7 @@ const PatientDashboard = () => {
                                     as="select"
                                     name="gender"
                                     onChange={onChange}
+                                    required
                                   >
                                     <option>female</option>
                                     <option>male</option>
@@ -238,14 +281,13 @@ const PatientDashboard = () => {
                             </Row>{" "}
                             <Row>
                               <Col>
-                                <Form.Group>
-                                  <Form.Control
-                                    type="text"
-                                    name="dob"
-                                    placeholder="Day of Birth"
-                                    onChange={onChange}
-                                  />
-                                </Form.Group>
+                                <DatePicker
+                                  onChange={(e) => {
+                                    setDob(e);
+                                    setProfile({ ...profile, dob: e });
+                                  }}
+                                  value={dob}
+                                />
                               </Col>
                             </Row>
                             <button
@@ -254,8 +296,8 @@ const PatientDashboard = () => {
                             >
                               Submit
                             </button>
-                          </Form>
-                        </div>
+                          </div>
+                        </Form>
                       </div>
                     </Tab.Pane>
                   </Tab.Content>

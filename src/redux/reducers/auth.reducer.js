@@ -4,7 +4,6 @@ const isAuthenticated = !!localStorage.getItem("accessToken");
 const role = localStorage.getItem("role");
 const initialState = {
   isAuthenticated,
-  userInfo: null,
   role,
 };
 
@@ -13,12 +12,12 @@ const authReducer = (state = initialState, action) => {
   switch (type) {
     case types.REGISTER_REQUEST:
     case types.REGISTER_SUCCESS:
-      return { ...state, userInfo: payload };
+      return { ...state, isAuthenticated: true };
     case types.REGISTER_FAILURE:
     case types.LOGIN_REQUEST:
 
     case types.LOGIN_SUCCESS:
-      return { ...state, userInfo: payload };
+      return { ...state, isAuthenticated: true };
     case types.LOGIN_FAILURE:
     case types.LOGOUT_REQUEST:
 

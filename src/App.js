@@ -51,6 +51,10 @@ import {
   faUniversity,
   faUserGraduate,
   faBirthdayCake,
+  faStar,
+  faAngleDoubleUp,
+  faExclamationTriangle,
+  faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -97,7 +101,11 @@ library.add(
   faUserCircle,
   faUniversity,
   faUserGraduate,
-  faBirthdayCake
+  faBirthdayCake,
+  faStar,
+  faAngleDoubleUp,
+  faExclamationTriangle,
+  faUpload
 );
 function App() {
   return (

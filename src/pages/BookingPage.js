@@ -11,6 +11,7 @@ import { PayPalButton } from "react-paypal-button-v2";
 import api from "../redux/api";
 import { patientActions } from "../redux/actions/patient.action";
 import { toast } from "react-toastify";
+import HashLoader from "react-spinners/HashLoader";
 
 const BookingPage = () => {
   const history = useHistory();
@@ -34,7 +35,7 @@ const BookingPage = () => {
   const doctorId = params.id;
 
   if (appointment && appointment.isPaid === true) {
-    history.push("/patient/me");
+    /* history.push("/patient/me"); */
   } else if (appointment && appointment.status === "unavailable") {
     history.push("/doctor/dashboard/me");
   }
@@ -142,9 +143,13 @@ const BookingPage = () => {
         keyboard={false}
       >
         {!appointment ? (
-          <h1>loading</h1>
+          <div className="d-flex justify-content-center">
+            <HashLoader color="#74d1c6" />
+          </div>
         ) : !appointment && appointment === undefined ? (
-          <h1>loading</h1>
+          <div className="d-flex justify-content-center">
+            <HashLoader color="#74d1c6" />
+          </div>
         ) : (
           <>
             <Modal.Header closeButton>
@@ -227,7 +232,9 @@ const BookingPage = () => {
                 <div className="slot-title">
                   <ul>
                     {!newApps ? (
-                      <h1>loading</h1>
+                      <div className="d-flex justify-content-center">
+                        <HashLoader color="#74d1c6" />
+                      </div>
                     ) : (
                       newApps.map((a) => {
                         return (
@@ -248,7 +255,9 @@ const BookingPage = () => {
           <div className="booking-calendar-content">
             <Row>
               {!newApps ? (
-                <h1>loading</h1>
+                <div className="d-flex justify-content-center">
+                  <HashLoader color="#74d1c6" />
+                </div>
               ) : (
                 newApps.map((a) => {
                   return (

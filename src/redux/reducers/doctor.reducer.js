@@ -40,6 +40,7 @@ const doctorReducer = (state = initialState, action) => {
       return {
         ...state,
         currentDoctor: payload.doctor,
+        totalPages: payload.totalPages,
         loading: false,
       };
     case types.GET_DOCTOR_ME_FAILURE:

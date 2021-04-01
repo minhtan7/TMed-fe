@@ -18,11 +18,20 @@ import DoctorDashboard from "../../pages/DoctorDashboard";
 import PatientDashboard from "../../pages/PatientDashboard";
 import BookingPage from "../../pages/BookingPage";
 import PayingPage from "../../pages/PayingPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PublicLayout = () => {
   return (
     <>
       <Header />
+      <a href="#" className="back-top">
+        {" "}
+        <FontAwesomeIcon
+          icon={["fas", "angle-double-up"]}
+          className="mr-2"
+          size="lg"
+        />{" "}
+      </a>
       <Container fluid style={{ padding: 0 }}>
         <AlertMsg />
         <Switch>

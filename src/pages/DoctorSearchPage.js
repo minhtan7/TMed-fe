@@ -16,6 +16,8 @@ import { doctorActions } from "../redux/actions/doctor.action";
 import { specializationActions } from "../redux/actions/specialization.action";
 import SearchBar from "../components/SearchBar";
 import { useHistory, useLocation } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
+import HashLoader from "react-spinners/HashLoader";
 
 const DoctorSearchPage = () => {
   const dispatch = useDispatch();
@@ -29,10 +31,13 @@ const DoctorSearchPage = () => {
     "specializations"
   );
   const sortByQuery = new URLSearchParams(search).get("sortBy");
+  const [pageNum, setPageNum] = useState(1);
+  const doctors = useSelector((state) => state.doctor.doctors);
   useEffect(() => {
+    console.log(pageNum);
     dispatch(
       doctorActions.getList({
-        pageNum: 1,
+        pageNum,
         limit: 10,
         query,
         genderQuery,
@@ -41,8 +46,14 @@ const DoctorSearchPage = () => {
       })
     );
     dispatch(specializationActions.getAllSpecialization());
-  }, [dispatch, query, genderQuery, specializationsQuery, sortByQuery]);
-  const doctors = useSelector((state) => state.doctor.doctors);
+  }, [
+    dispatch,
+    query,
+    genderQuery,
+    specializationsQuery,
+    sortByQuery,
+    pageNum,
+  ]);
 
   const specializations = useSelector(
     (state) => state.specialization.specializations
@@ -81,8 +92,7 @@ const DoctorSearchPage = () => {
   return (
     <>
       {" "}
-      <div className="nav-2"></div>
-      <div className="sort-bar">
+      <div className="sort-bar nav-2">
         <Container fluid>
           <Row>
             <Col md="8" xs="12">
@@ -145,7 +155,9 @@ const DoctorSearchPage = () => {
                               <Form.Control as="select" onChange={onChange}>
                                 <option value="all">All Specializations</option>
                                 {!specializations ? (
-                                  <h1>Loading</h1>
+                                  <div className="d-flex justify-content-center">
+                                    <HashLoader color="#74d1c6" />
+                                  </div>
                                 ) : (
                                   specializations.map((s) => {
                                     return (
@@ -171,11 +183,25 @@ const DoctorSearchPage = () => {
             <Col md="12" lg="8" xl="9">
               <ol>
                 {!doctors ? (
-                  <h1>loading</h1>
+                  <div className="d-flex justify-content-center">
+                    <HashLoader color="#74d1c6" />
+                  </div>
                 ) : (
-                  doctors.map((d) => {
-                    return <DoctorCard key={d._id} doctor={d} />;
-                  })
+                  <InfiniteScroll
+                    dataLength={30}
+                    next={() => setPageNum(pageNum + 1)}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                    endMessage={
+                      <p style={{ textAlign: "center" }}>
+                        <b>Yay! You have seen it all</b>
+                      </p>
+                    }
+                  >
+                    {doctors.map((d) => {
+                      return <DoctorCard key={d._id} doctor={d} />;
+                    })}
+                  </InfiniteScroll>
                 )}
               </ol>
             </Col>

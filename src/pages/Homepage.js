@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, Container, Form, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import DatePicker from "react-date-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import StarRatings from "react-star-ratings";
 
 const Homepage = () => {
   const [value, onChangeDate] = useState(new Date());
-  console.log(value);
+
   const effectiveTreatment1 = [
     "Eating Disorders",
     "Family Therapy for Child",
@@ -25,6 +26,44 @@ const Homepage = () => {
     "Patient Centered Care",
   ];
 
+  let doctors = [
+    {
+      name: "Roberta Weimann",
+      specialization: "rheumatology",
+      avatarUrl: "http://www.ansonika.com/findoctor/img/doctor_3_carousel.jpg",
+      numberOfReview: 30,
+      numberOfAppointments: 88,
+    },
+    {
+      name: "Ted Towne",
+      specialization: "pulmology",
+      avatarUrl: "http://www.ansonika.com/findoctor/img/doctor_2_carousel.jpg",
+      numberOfReview: 23,
+      numberOfAppointments: 73,
+    },
+    {
+      name: "Horace Hyatt",
+      specialization: "cadiology",
+      avatarUrl: "http://www.ansonika.com/findoctor/img/doctor_1_carousel.jpg",
+      numberOfReview: 28,
+      numberOfAppointments: 132,
+    },
+  ];
+
+  let formatPhoneNumber = (str) => {
+    //Filter only numbers from the input
+    let cleaned = ("" + str).replace(/\D/g, "");
+
+    //Check if the input is of correct length
+    let match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{3})$/);
+    if (match) {
+      return (
+        "(+" + match[1] + ") " + match[2] + " " + match[3] + " " + match[4]
+      );
+    }
+    return null;
+  };
+
   const section_1 = (
     <Container>
       <div className="banner-wrapper">
@@ -34,9 +73,9 @@ const Homepage = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna Quis ipsumpsum.
         </p>
-        <button className="banner-btn" as={Link} to="/">
+        <a className="banner-btn" as={Link} to="/search">
           Make appointment
-        </button>
+        </a>
       </div>
     </Container>
   );
@@ -84,7 +123,7 @@ const Homepage = () => {
         </Form>
       </div>
       <div className="row justify-content-center mt-4">
-        <button className="banner-btn">Make appointment</button>
+        <a className="banner-btn">Make appointment</a>
       </div>
     </Container>
   );
@@ -94,7 +133,7 @@ const Homepage = () => {
       <Row>
         <Col>
           <img
-            src="https://doccure-laravel.dreamguystech.com/template-pediatric/public/assets/img/effect.jpg"
+            src="https://res.cloudinary.com/tanvo/image/upload/v1617251612/hessam-nabavi-ULU4auyoHkU-unsplash_wt9mkw.png"
             alt=""
           />
         </Col>
@@ -204,19 +243,19 @@ const Homepage = () => {
   const section_5 = (
     <Container>
       <Row>
-        <Col md="3" lg="3">
+        <Col md="3" lg="3" sm="3">
           <h2>980+</h2>
           <p>Satisfied Patients</p>
         </Col>
-        <Col md="3" lg="3">
+        <Col md="3" lg="3" sm="3">
           <h2>100+</h2>
           <p>Professional Doctor</p>
         </Col>
-        <Col md="3" lg="3">
+        <Col md="3" lg="3" sm="3">
           <h2>100%</h2>
           <p>Quality</p>
         </Col>
-        <Col md="3" lg="3">
+        <Col md="3" lg="3" sm="3">
           <h2>15+</h2>
           <p>Year Experience</p>
         </Col>
@@ -226,19 +265,62 @@ const Homepage = () => {
   const section_6 = (
     <Container>
       <div className="section-header">
-        <h6>Meet our doctors</h6>
-        <h2>
-          Our doctors
-          <Link to="/">View all doctors</Link>
-        </h2>
+        <div>
+          <h6>Meet our doctors</h6>
+          <h2>
+            Our doctors
+            <Link to="/search">View all doctors >></Link>
+          </h2>
+        </div>
+        <Row>
+          {doctors.map((d) => {
+            return (
+              <>
+                <Col lg="4" md="6">
+                  <div className="homepage-card">
+                    <div>
+                      <img src={d.avatarUrl} alt="" />
+                    </div>
+                    <div
+                      className="hompepage-card-content"
+                      style={{ padding: "5px 10px" }}
+                    >
+                      <small
+                        style={{ color: "white" }}
+                        className="review-specialization"
+                      >
+                        specialization
+                      </small>
+                      <h4>DR. {d.name}</h4>
+                      <div style={{ marginBottom: "15px" }}>
+                        <StarRatings
+                          rating={5}
+                          starRatedColor="#ffa41b"
+                          changeRating={() => console.log("haha")}
+                          numberOfStars={5}
+                          name="rating"
+                          starDimension="15px"
+                          starSpacing="0"
+                        />{" "}
+                        <small>{d.numberOfReview} reviews</small>
+                      </div>
+                      <div className="doctor-appointment">
+                        {d.numberOfAppointments} appointments
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              </>
+            );
+          })}
+        </Row>
       </div>
-      <div>doctor here</div>
     </Container>
   );
   return (
     <div>
       <div className="section-1-banner">{section_1}</div>
-      <div className="section-2">{section_2}</div>
+      {/* <div className="section-2">{section_2}</div> */}
       <div className="section-3">{section_3}</div>
       <div className="section-4-why">{section_4}</div>
       <div className="section-5-count">{section_5}</div>

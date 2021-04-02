@@ -696,6 +696,7 @@ body {
 .booking-calender {
   border: 1px solid #f0f0f0;
   border-radius: 4px;
+  background-color: white;
 }
 .booking-calendar-header {
   padding: 10px 20px;

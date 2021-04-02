@@ -18,6 +18,23 @@ body {
 html {
   scroll-behavior: smooth;
 }
+.btn-primary:hover {
+  background-color: var(--purple);
+  border-color: var(--purple);
+}
+/* ----------------------------
+----------------------------
+----------------------------
+---------------------------- */
+body {
+  background-color: #e5e5f7;
+  opacity: 1;
+  background-image: radial-gradient(#74d1c6 2px, #e5e5f7 2px);
+  background-size: 40px 40px;
+}
+/* ----------------------------- 
+----------------------------
+----------------------------*/
 
 .back-top {
   position: fixed;
@@ -358,7 +375,6 @@ html {
   padding: 60px 0 0;
   position: relative;
   width: 100%;
-  background-color: #fff;
 }
 .section-5-count .row {
   background-color: #fff;
@@ -370,8 +386,6 @@ html {
 
 /* ------------------ Section 6 doctor */
 .section-6-doctor {
-  background-color: #fff;
-  padding: 60px 0 40px;
 }
 
 .section-header a {
@@ -396,6 +410,7 @@ html {
   max-width: 300px;
   width: 100%;
   height: auto;
+  border-radius: 15px;
 }
 .hompepage-card-content {
   opacity: 0;
@@ -468,7 +483,6 @@ html {
 
 /* ---- sort-bar */
 .sort-bar {
-  background-color: white;
   padding: 15px 0;
 }
 .container-fluid {
@@ -588,6 +602,19 @@ html {
   background-color: #f7f7f7;
   border-radius: 50%;
 }
+.nav-info {
+  background-color: white;
+  padding: 10px;
+  border-radius: 15px;
+}
+.dashboard-btn {
+  width: 100%;
+  text-align: center;
+}
+.dashboard-table {
+  border-radius: 15px;
+}
+
 .nav-link.active {
   background-color: #74d1c6 !important;
 }
@@ -831,13 +858,14 @@ html {
 .visit {
   background-color: #3f4079;
   color: white;
-  padding: 20px 30px;
-  margin: -30px -30px 30px -30px;
+  padding: 10px;
   text-align: center;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: 20px;
 }
 .review-visit {
   /* position: fixed; */
-  padding: 20px;
+
   width: 350px;
   top: 0;
   /* transform: translateY(95px); */
@@ -856,9 +884,10 @@ html {
   border-radius: 4px;
   cursor: pointer;
   width: 120px;
+  background-color: white;
 }
 .slot-detail:hover {
-  background-color: #e74e84;
+  background-color: var(--green);
 }
 .side-detail a {
   text-align: center;

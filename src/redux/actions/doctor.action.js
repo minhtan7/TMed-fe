@@ -103,7 +103,8 @@ const acceptedAppointment = (id) => async (dispatch) => {
       payload: res.data.data,
     });
     toast.success("Appoinment accepted!");
-    dispatch(doctorActions.getDoctorMe());
+    let query;
+    dispatch(doctorActions.getDoctorMe({ pageNum: 1, limit: 10, query }));
   } catch (err) {
     dispatch({ type: types.POST_ACCEPTED_APPOINTMENT_FAILURE, payload: err });
   }
@@ -119,7 +120,8 @@ const cancelAppointment = (id) => async (dispatch) => {
       payload: res.data.data,
     });
     toast.success("Appoinment canceled!");
-    dispatch(doctorActions.getDoctorMe());
+    let pageNum, limit, query;
+    dispatch(doctorActions.getDoctorMe({ pageNum, limit: 10, query }));
   } catch (err) {
     dispatch({ type: types.PUT_CANCEL_FAILURE, payload: err });
   }

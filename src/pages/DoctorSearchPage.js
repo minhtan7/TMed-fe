@@ -96,12 +96,12 @@ const DoctorSearchPage = () => {
         <Container fluid>
           <Row>
             <Col md="8" xs="12">
-              <Breadcrumb className="page-breadcrumb">
+              {/* <Breadcrumb className="page-breadcrumb">
                 <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
                 <Breadcrumb.Item active>Search</Breadcrumb.Item>
-              </Breadcrumb>
+              </Breadcrumb> */}
               <h2 className="breadcrumb-title">
-                2245 matches found for: Pediatric In HCMC
+                {doctors && doctors.length} doctors matches found
               </h2>
             </Col>
             <Col md="4" xs="12" className="d-none d-md-block ">
@@ -120,7 +120,7 @@ const DoctorSearchPage = () => {
                     <Card>
                       <Card.Header>Search Filter</Card.Header>
                       <Card.Body>
-                        <Card.Title>Sort by</Card.Title>
+                        {/* <Card.Title>Sort by</Card.Title>
                         <Card.Text>
                           <div>
                             <Form.Group controlId="exampleForm.ControlSelect1">
@@ -130,7 +130,7 @@ const DoctorSearchPage = () => {
                               </Form.Control>
                             </Form.Group>
                           </div>
-                        </Card.Text>
+                        </Card.Text> */}
                         <Card.Title>Gender</Card.Title>
                         <Card.Text>
                           <div class="form-check">
@@ -187,21 +187,9 @@ const DoctorSearchPage = () => {
                     <HashLoader color="#74d1c6" />
                   </div>
                 ) : (
-                  <InfiniteScroll
-                    dataLength={30}
-                    next={() => setPageNum(pageNum + 1)}
-                    hasMore={true}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={
-                      <p style={{ textAlign: "center" }}>
-                        <b>Yay! You have seen it all</b>
-                      </p>
-                    }
-                  >
-                    {doctors.map((d) => {
-                      return <DoctorCard key={d._id} doctor={d} />;
-                    })}
-                  </InfiniteScroll>
+                  doctors.map((d) => {
+                    return <DoctorCard key={d._id} doctor={d} />;
+                  })
                 )}
               </ol>
             </Col>
@@ -213,3 +201,19 @@ const DoctorSearchPage = () => {
 };
 
 export default DoctorSearchPage;
+{
+  /* <InfiniteScroll
+                    dataLength={30}
+                    next={() => setPageNum(pageNum + 1)}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                    endMessage={
+                      <p style={{ textAlign: "center" }}>
+                        <b>Yay! You have seen it all</b>
+                      </p>
+                    }
+                  > */
+}
+{
+  /* </InfiniteScroll> */
+}

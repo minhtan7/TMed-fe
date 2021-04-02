@@ -9,6 +9,7 @@ import {
   ProgressBar,
   Table,
   Button,
+  Form,
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,8 @@ import { doctorActions } from "../redux/actions/doctor.action";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HashLoader from "react-spinners/HashLoader";
+import { patientActions } from "../redux/actions/patient.action";
+var moment = require("moment");
 
 const DoctorDetailPage = () => {
   const [key, setKey] = useState("home");
@@ -24,7 +27,8 @@ const DoctorDetailPage = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const id = params.id;
-  console.log(id);
+  const [star, setStar] = useState(0);
+
   useEffect(() => {
     dispatch(doctorActions.getSingleDoctor(id));
   }, [dispatch, id]);
@@ -55,11 +59,25 @@ const DoctorDetailPage = () => {
       starPercentage.push((rate / reviews.length) * 100);
     }
   }
-  console.log(starPercentage);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+  let [contentReview, setContentReview] = useState({ title: "", body: "" });
+  const onChange = (e) => {
+    setContentReview({ ...contentReview, [e.target.name]: e.target.value });
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(patientActions.addReivew(contentReview, star, doctor._id));
+    setContentReview({ title: "", body: "" });
+    setStar(0);
+    e.target.reset();
+  };
+  const ratingRange = ["Very Poor", "Poor", "Average", "Good", "Excellent"];
+  const handleRate = (r) => {
+    setStar(r);
+  };
 
   const workingHour1 = ["16:00", "16:30", "17:00", "17:30", "18:00"];
   const workingHour2 = ["18:30", "19:00", "19:30", "20:00", "20:30"];
@@ -214,7 +232,7 @@ const DoctorDetailPage = () => {
                         <Col lg="3">
                           <div className="review-avg">
                             <div style={{ position: "relative" }}>
-                              <strong>3 </strong>
+                              <strong>{doctor.avgRating.toFixed(1)} </strong>
                               <span>
                                 <FontAwesomeIcon
                                   icon={["fas", "star"]}
@@ -280,16 +298,73 @@ const DoctorDetailPage = () => {
                                     starDimension=".8125rem"
                                     starSpacing="0"
                                   />{" "}
+                                  <span className="review-name">
+                                    {r.patient.parentName} - create At{" "}
+                                    {moment(r.createdAt).format("Do MM YYYY")}
+                                  </span>
                                 </div>
-                                <p className="review-name">
-                                  {r.patient.parentName} - create At
-                                </p>
+
+                                <h5>{r.title}</h5>
                                 <p>{r.body}</p>
                               </div>
                             </div>
                           );
                         })}
                       </div>
+                    </div>
+                    <hr />
+                    <div>
+                      <div className="d-flex justify-content-between">
+                        <h3 style={{ marginBottom: "20px" }}>Write a review</h3>
+                        <div>
+                          {star === 0 ? (
+                            <span style={{ marginRight: "20px" }}>
+                              Rate me!
+                            </span>
+                          ) : (
+                            ratingRange.map((r, index) => {
+                              if (index + 1 === star)
+                                return (
+                                  <span style={{ marginRight: "20px" }}>
+                                    {ratingRange[index]}
+                                  </span>
+                                );
+                            })
+                          )}
+                          <StarRatings
+                            rating={star}
+                            starRatedColor="#ffa41b"
+                            changeRating={(r) => handleRate(r)}
+                            numberOfStars={5}
+                            name="rating"
+                            starDimension="1.5rem"
+                            starSpacing="0"
+                          />{" "}
+                        </div>
+                      </div>
+
+                      <Form onSubmit={onSubmit} style={{ textAlign: "end" }}>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                          <Form.Control
+                            as="textarea"
+                            rows={1}
+                            onChange={onChange}
+                            name="title"
+                            placeholder="Title"
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            onChange={onChange}
+                            name="body"
+                            placeholder="Write something here"
+                          />
+                        </Form.Group>
+
+                        <Button type="submit">Submit</Button>
+                      </Form>
                     </div>
                   </div>
                 </Col>
@@ -312,8 +387,11 @@ const DoctorDetailPage = () => {
                       </div>
                     </div>
 
-                    <hr />
-                    <Button as={Link} to={`/booking/${doctor._id}`}>
+                    <Button
+                      style={{ marginTop: "20px" }}
+                      as={Link}
+                      to={`/booking/${doctor._id}`}
+                    >
                       Book now
                     </Button>
                   </div>

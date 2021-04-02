@@ -2,6 +2,7 @@ import * as types from "../constants/patient.constant";
 import api from "../api";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { doctorActions } from "./doctor.action";
 const moment = require("moment");
 
 const getPatientMe = (id) => async (dispatch) => {
@@ -38,7 +39,7 @@ const cancelAppointment = (id) => async (dispatch) => {
     dispatch({ type: types.PUT_CANCEL_REQUEST });
     let date = moment().format();
     const res = await api.put(`/appointment/${id}/cancel`, { date });
-    console.log(res);
+
     dispatch({
       type: types.PUT_CANCEL_SUCCESS,
       payload: res.data.data,
@@ -50,23 +51,25 @@ const cancelAppointment = (id) => async (dispatch) => {
   }
 };
 
-const requestAppointmentIsPaidFalse = (doctorId, date, slot) => async (
+const requestAppointmentIsPaidFalse = (doctorId, date, slot, role) => async (
   dispatch
 ) => {
   try {
+    let value = new Date();
     dispatch({ type: types.POST_REQUEST_APPOINTMENT_IS_PAID_FALSE_REQUEST });
     const res = await api.post(`/appointment/doctor/${doctorId}`, {
-      doctorId,
       date,
       slot,
+      role,
     });
-    console.log(res);
+    dispatch(doctorActions.getAppointmentOfaDoc(value, doctorId));
+
     dispatch({
       type: types.POST_REQUEST_APPOINTMENT_IS_PAID_FALSE_SUCCESS,
       payload: res.data.data,
     });
 
-    dispatch(patientActions.getPatientMe());
+    /* dispatch(patientActions.getPatientMe()); */
   } catch (err) {
     dispatch({
       type: types.POST_REQUEST_APPOINTMENT_IS_PAID_FALSE_FAILURE,
@@ -80,7 +83,7 @@ const requestAppointment = (status, appointmentId) => async (dispatch) => {
     dispatch({ type: types.PUT_RESERVATION_FEE_REQUEST });
     if (status === "COMPLETED") {
       const res = await api.put(`/appointment`, { status, appointmentId });
-      console.log(res);
+
       dispatch({
         type: types.PUT_RESERVATION_FEE_SUCCESS,
         payload: res.data.data,
@@ -95,10 +98,29 @@ const requestAppointment = (status, appointmentId) => async (dispatch) => {
   }
 };
 
+const addReivew = (contentReview, star, doctorId) => async (dispatch) => {
+  try {
+    let { title, body } = contentReview;
+    dispatch({ type: types.POST_ADD_REVIEW_REQUEST });
+    const res = await api.post(`/review`, { title, body, star, doctorId });
+    dispatch({
+      type: types.POST_ADD_REVIEW_SUCCESS,
+      payload: res.data.data,
+    });
+    dispatch(doctorActions.getSingleDoctor(doctorId));
+  } catch (err) {
+    dispatch({
+      type: types.POST_ADD_REVIEW_FAILURE,
+      payload: err,
+    });
+  }
+};
+
 export const patientActions = {
   getPatientMe,
   putPatientProfile,
   cancelAppointment,
   requestAppointmentIsPaidFalse,
   requestAppointment,
+  addReivew,
 };

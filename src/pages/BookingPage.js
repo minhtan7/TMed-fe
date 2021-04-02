@@ -21,7 +21,12 @@ const BookingPage = () => {
   const handleClose = () => setShow(false);
   const [showDoc, setShowDoc] = useState(false);
   const handleCloseDoc = () => setShowDoc(false);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  console.log(isAuthenticated);
   const handleShow = (date, slot) => {
+    if (!isAuthenticated) {
+      history.push("/login");
+    }
     if (role === "patient") {
       setShow(true);
       dispatch(

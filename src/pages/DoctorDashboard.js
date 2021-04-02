@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Tab, Col, Nav, Table, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Tab,
+  Col,
+  Nav,
+  Table,
+  Form,
+  Button,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
@@ -27,6 +36,20 @@ const DoctorDashboard = () => {
   const search = location.search;
 
   let query = new URLSearchParams(search).get("search");
+
+  let formatPhoneNumber = (str) => {
+    //Filter only numbers from the input
+    let cleaned = ("" + str).replace(/\D/g, "");
+
+    //Check if the input is of correct length
+    let match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{3})$/);
+    if (match) {
+      return (
+        "(+" + match[1] + ") " + match[2] + " " + match[3] + " " + match[4]
+      );
+    }
+    return null;
+  };
 
   const [profile, setProfile] = useState({
     email: "",
@@ -67,6 +90,19 @@ const DoctorDashboard = () => {
     dispatch(specializationActions.getAllSpecialization());
   }, [dispatch, query, pageNum]);
 
+  const myWidget = window.cloudinary.createUploadWidget(
+    {
+      cloudName: "tanvo",
+      uploadPreset: "ecommerce_upload",
+    },
+    (error, result) => {
+      if (!error && result && result.event === "success") {
+        console.log("Done! Here is the image info: ", result.info);
+        setProfile({ ...profile, avatarUrl: result.info.url });
+      }
+    }
+  );
+
   const handleAccepted = (id) => {
     dispatch(doctorActions.acceptedAppointment(id));
   };
@@ -105,54 +141,79 @@ const DoctorDashboard = () => {
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
               <Row>
                 <Col sm={3}>
-                  <Nav variant="pills" className="flex-column">
-                    <div style={{ height: "auto" }}>
-                      <img src={`${doctor.avatarUrl}`} alt="" />
+                  <Nav variant="pills" className="flex-column nav-info">
+                    <div style={{ padding: "20px" }}>
+                      <div className="patient-img">
+                        <img
+                          className="rounded"
+                          src={`${doctor.avatarUrl}`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="patient-info">
+                        <div style={{ marginTop: "20px" }}>
+                          <h3>Doc name: {doctor.name}</h3>
+                          <p>
+                            Email: <span>{doctor.email}</span>
+                          </p>
+                          <p>
+                            Phone:{" "}
+                            <span>{formatPhoneNumber(doctor.phone)}</span>
+                          </p>
+                          <p>Balance: {doctor.balance}</p>
+                        </div>
+                      </div>
                     </div>
-                    <Nav.Item>
+                    <Nav.Item className="dashboard-btn">
                       <Nav.Link eventKey="first">Appointment</Nav.Link>
                     </Nav.Item>
-                    <Nav.Item>
+                    <Nav.Item className="dashboard-btn">
                       <Nav.Link eventKey="second">Profile</Nav.Link>
                     </Nav.Item>
                   </Nav>
                 </Col>
                 <Col sm={9}>
-                  <div className="d-flex justify-content-between nav-search">
-                    <form
-                      style={{ position: "relative" }}
-                      onSubmit={onSubmitSearch}
-                    >
-                      <input
-                        /* className={`${classes}`} */
-                        placeholder="Patient name"
-                        onChange={onChangeSearch}
-                      />
-                      <FontAwesomeIcon
-                        icon={["fas", "search"]}
-                        className="mr-2 nav-search-icon"
-                        size="lg"
-                      />
-                    </form>
-                    <div>
-                      <Pagination
-                        activePage={pageNum}
-                        itemsCountPerPage={10}
-                        totalItemsCount={totalPages * 10}
-                        pageCount={totalPages}
-                        pageRangeDisplayed={5}
-                        onChange={handlePageChange}
-                        itemClass={"paginationBttns"}
-                        itemClassLast={"previousBttn"}
-                        itemClassNext={"nextBttn"}
-                        disabledClass={"paginationDisabled"}
-                        activeClass={"paginationActive"}
-                      />
-                    </div>
-                  </div>
                   <Tab.Content>
                     <Tab.Pane eventKey="first">
-                      <Table striped bordered hover variant="light">
+                      <div className="d-flex justify-content-between nav-search">
+                        <form
+                          style={{ position: "relative" }}
+                          onSubmit={onSubmitSearch}
+                        >
+                          <input
+                            /* className={`${classes}`} */
+                            placeholder="Patient name"
+                            onChange={onChangeSearch}
+                          />
+                          <FontAwesomeIcon
+                            icon={["fas", "search"]}
+                            className="mr-2 nav-search-icon"
+                            size="lg"
+                          />
+                        </form>
+                        <div>
+                          <Pagination
+                            activePage={pageNum}
+                            itemsCountPerPage={10}
+                            totalItemsCount={totalPages * 10}
+                            pageCount={totalPages}
+                            pageRangeDisplayed={5}
+                            onChange={handlePageChange}
+                            itemClass={"paginationBttns"}
+                            itemClassLast={"previousBttn"}
+                            itemClassNext={"nextBttn"}
+                            disabledClass={"paginationDisabled"}
+                            activeClass={"paginationActive"}
+                          />
+                        </div>
+                      </div>
+                      <Table
+                        striped
+                        bordered
+                        hover
+                        variant="light"
+                        className="dashboard-table"
+                      >
                         <thead>
                           <tr>
                             <th>Doctor</th>
@@ -204,108 +265,122 @@ const DoctorDashboard = () => {
                       </Table>
                     </Tab.Pane>
                     <Tab.Pane eventKey="second">
-                      <div>Basic information</div>
                       <div>
-                        <div>
-                          <div style={{ display: "flex" }}>
-                            <img src={doctor.avatarUrl} />
-                            <div> Upload</div>
-                          </div>
-                          <Form onSubmit={onSubmit}>
-                            <Row>
-                              <Col>
-                                <Form.Group>
-                                  <Form.Control
-                                    type="email"
-                                    name="email"
-                                    placeholder="Enter Email"
-                                    onChange={onChange}
-                                  />
-                                </Form.Group>
-                              </Col>
-                              <Col>
-                                <Form.Group>
-                                  <Form.Control
-                                    type="text"
-                                    name="phone"
-                                    placeholder="Enter your phone number"
-                                    onChange={onChange}
-                                  />
-                                </Form.Group>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <Form.Group controlId="exampleForm.ControlSelect1">
-                                  <Form.Control
-                                    as="select"
-                                    name="gender"
-                                    onChange={onChange}
-                                  >
-                                    <option>female</option>
-                                    <option>male</option>
-                                    <option>other</option>
-                                  </Form.Control>
-                                </Form.Group>
-                              </Col>
-                              <Col>
-                                <Form.Group>
-                                  <Form.Control
-                                    as="select"
-                                    name="specialization"
-                                    onChange={onChange}
-                                  >
-                                    {specializations &&
-                                      specializations.map((s) => {
-                                        return <option>{s.name}</option>;
-                                      })}
-                                  </Form.Control>
-                                </Form.Group>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <Form.Group>
-                                  <Form.Control
-                                    type="text"
-                                    name="degree"
-                                    placeholder="Your degree"
-                                    onChange={onChange}
-                                  />
-                                </Form.Group>
-                              </Col>
-                              <Col>
-                                <Form.Group>
-                                  <Form.Control
-                                    type="text"
-                                    name="address"
-                                    placeholder="Enter Your Address"
-                                    onChange={onChange}
-                                  />
-                                </Form.Group>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <Form.Group controlId="exampleForm.ControlTextarea1">
-                                  <Form.Label>About</Form.Label>
-                                  <Form.Control
-                                    as="textarea"
-                                    rows={5}
-                                    name="about"
-                                    onChange={onChange}
-                                  />
-                                </Form.Group>
-                              </Col>
-                            </Row>
-                            <button
-                              type="submit"
-                              className="btn btn-block btn-lg login-button btn-primary"
-                            >
-                              Submit
-                            </button>
-                          </Form>
+                        <div className="dashboard-img">
+                          <img src={doctor.avatarUrl} />
+
+                          <Button onClick={() => myWidget.open()}>
+                            <span>
+                              <FontAwesomeIcon
+                                icon={["fas", "upload"]}
+                                className="mr-2"
+                                size="lg"
+                              />
+                            </span>
+                            Open widget{" "}
+                          </Button>
                         </div>
+                        <Form onSubmit={onSubmit}>
+                          <Row>
+                            <Col>
+                              <Form.Group>
+                                <Form.Control
+                                  type="email"
+                                  name="email"
+                                  placeholder="Enter Email"
+                                  onChange={onChange}
+                                  required
+                                />
+                              </Form.Group>
+                            </Col>
+                            <Col>
+                              <Form.Group>
+                                <Form.Control
+                                  type="text"
+                                  name="phone"
+                                  placeholder="Enter your phone number"
+                                  onChange={onChange}
+                                  required
+                                />
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <Form.Group controlId="exampleForm.ControlSelect1">
+                                <Form.Control
+                                  as="select"
+                                  name="gender"
+                                  onChange={onChange}
+                                  required
+                                >
+                                  <option>female</option>
+                                  <option>male</option>
+                                  <option>other</option>
+                                </Form.Control>
+                              </Form.Group>
+                            </Col>
+                            <Col>
+                              <Form.Group>
+                                <Form.Control
+                                  as="select"
+                                  name="specialization"
+                                  onChange={onChange}
+                                  required
+                                >
+                                  {specializations &&
+                                    specializations.map((s) => {
+                                      return <option>{s.name}</option>;
+                                    })}
+                                </Form.Control>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <Form.Group>
+                                <Form.Control
+                                  type="text"
+                                  name="degree"
+                                  placeholder="Your degree"
+                                  onChange={onChange}
+                                  required
+                                />
+                              </Form.Group>
+                            </Col>
+                            <Col>
+                              <Form.Group>
+                                <Form.Control
+                                  type="text"
+                                  name="address"
+                                  placeholder="Enter Your Address"
+                                  onChange={onChange}
+                                  required
+                                />
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <Form.Group controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>About</Form.Label>
+                                <Form.Control
+                                  as="textarea"
+                                  rows={5}
+                                  name="about"
+                                  onChange={onChange}
+                                  required
+                                />
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                          <button
+                            type="submit"
+                            className="btn btn-block btn-lg login-button btn-primary"
+                          >
+                            Submit
+                          </button>
+                        </Form>
                       </div>
                     </Tab.Pane>
                   </Tab.Content>

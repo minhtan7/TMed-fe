@@ -19,21 +19,21 @@ const DoctorCard = ({ doctor }) => {
         <figure className="figure ">
           <Link to={`/doctor/${doctor._id}`}>
             <img
-              src={doctor.avatarUrl}
+              src={doctor && doctor.avatarUrl}
               alt=""
               className="figure-img img-fluid rounded"
             />
           </Link>
         </figure>
-        <small>{doctor.specialization.name}</small>
+        <small>{doctor.specialization && doctor.specialization.name}</small>
         <Link to={`/doctor/${doctor._id}`}>
-          <h3>Dr. {doctor.name}</h3>
+          <h3>Dr. {doctor && doctor.name}</h3>
         </Link>
 
-        <p>{truncateText(doctor.profile.about, 170)}</p>
+        <p>{truncateText(doctor && doctor.profile.about, 170)}</p>
         <div>
           <StarRatings
-            rating={doctor.avgRating}
+            rating={doctor && doctor.avgRating}
             starRatedColor="#ffa41b"
             changeRating={() => console.log("haha")}
             numberOfStars={5}
@@ -41,7 +41,7 @@ const DoctorCard = ({ doctor }) => {
             starDimension="20px"
             starSpacing="0"
           />{" "}
-          <span>({doctor.reviews.length})</span>
+          <span>({doctor && doctor.reviews.length})</span>
         </div>
         <div className="card-button">
           <Button as={Link} to={`/doctor/${doctor._id}`}>

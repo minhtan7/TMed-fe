@@ -32,6 +32,7 @@ const PublicLayout = () => {
           size="lg"
         />{" "}
       </a>
+
       <Container fluid style={{ padding: 0 }}>
         <AlertMsg />
         <Switch>

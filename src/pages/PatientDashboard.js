@@ -114,7 +114,7 @@ const PatientDashboard = () => {
             <Tab.Container id="left-tabs-example" defaultActiveKey="first">
               <Row>
                 <Col sm={3}>
-                  <Nav variant="pills" className="flex-column">
+                  <Nav variant="pills" className="flex-column nav-info">
                     <div style={{ padding: "20px" }}>
                       <div className="patient-img">
                         <img
@@ -142,14 +142,19 @@ const PatientDashboard = () => {
                             Phone:{" "}
                             <span>{formatPhoneNumber(patient.phone)}</span>
                           </p>
+                          <p>Balance: {patient.balance}</p>
                         </div>
                       </div>
                     </div>
                     <Nav.Item>
-                      <Nav.Link eventKey="first">Appointment</Nav.Link>
+                      <Nav.Link eventKey="first" className="dashboard-btn">
+                        Appointment
+                      </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                      <Nav.Link eventKey="second">Profile</Nav.Link>
+                      <Nav.Link eventKey="second" className="dashboard-btn">
+                        Profile
+                      </Nav.Link>
                     </Nav.Item>
                   </Nav>
                 </Col>

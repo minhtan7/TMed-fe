@@ -19,11 +19,20 @@ const BookingPage = () => {
   const params = useParams();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const [showDoc, setShowDoc] = useState(false);
+  const handleCloseDoc = () => setShowDoc(false);
   const handleShow = (date, slot) => {
-    setShow(true);
-    dispatch(
-      patientActions.requestAppointmentIsPaidFalse(doctorId, date, slot)
-    );
+    if (role === "patient") {
+      setShow(true);
+      dispatch(
+        patientActions.requestAppointmentIsPaidFalse(doctorId, date, slot, role)
+      );
+    } else {
+      setShowDoc(true);
+      dispatch(
+        patientActions.requestAppointmentIsPaidFalse(doctorId, date, slot, role)
+      );
+    }
   };
   const role = useSelector((state) => state.auth.role);
   const doctor = useSelector((state) => state.doctor.currentDoctor);
@@ -34,11 +43,11 @@ const BookingPage = () => {
 
   const doctorId = params.id;
 
-  if (appointment && appointment.isPaid === true) {
-    /* history.push("/patient/me"); */
+  /* if (appointment && appointment.isPaid === true) {
+    history.push("/patient/me");
   } else if (appointment && appointment.status === "unavailable") {
     history.push("/doctor/dashboard/me");
-  }
+  } */
 
   useEffect(() => {
     dispatch(doctorActions.getSingleDoctor(doctorId));
@@ -82,6 +91,10 @@ const BookingPage = () => {
       apps[key].forEach((i) => {
         if (i.isPaid) {
           y.slot[i.slot][1] = i.status;
+        } else {
+          if (i.status === "unavailable") {
+            y.slot[i.slot][1] = i.status;
+          }
         }
       });
       newApps.push(y);
@@ -90,10 +103,10 @@ const BookingPage = () => {
       newApps.push(y);
     }
   }
+  useEffect(() => {}, [newApps]);
   console.log("apps", apps);
   console.log("newApps", newApps);
 
-  const [sdkReady, setSdkReady] = useState(false);
   /* useEffect(() => {
     if (!userInfo) {
       history.push("/login");
@@ -133,8 +146,10 @@ const BookingPage = () => {
 
   let date = moment();
   let maxDate = moment().add(7, "days"); //add will change the maxDate
-
-  const MyModal = () => {
+  const ModalDoctor = () => {
+    return <></>;
+  };
+  const ModalPatient = () => {
     return (
       <Modal
         show={show}
@@ -182,9 +197,9 @@ const BookingPage = () => {
                 </p>
                 <p>
                   Date:{" "}
-                  <spans tyle={{ fontStyle: "italic" }}>
+                  <span tyle={{ fontStyle: "italic" }}>
                     {moment(appointment.date).format("Do MMM YYYY")}
-                  </spans>{" "}
+                  </span>{" "}
                 </p>
                 <p>
                   Time:{" "}
@@ -208,7 +223,15 @@ const BookingPage = () => {
       <div className="nav nav-2"></div>
 
       <Container>
-        <div>{!doctor ? <h1>loading</h1> : <DoctorCard doctor={doctor} />}</div>
+        <div>
+          {!doctor ? (
+            <div className="d-flex justify-content-center">
+              <HashLoader color="#74d1c6" />
+            </div>
+          ) : (
+            <DoctorCard doctor={doctor} />
+          )}
+        </div>
         <div className="d-flex justify-content-between mb-3">
           <DatePicker
             onChange={(e) => {
@@ -302,7 +325,8 @@ const BookingPage = () => {
           </div>
         </div>
       </Container>
-      <MyModal />
+      <ModalPatient />
+      <ModalDoctor />
     </>
   );
 };

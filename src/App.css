@@ -449,6 +449,7 @@ body {
   background-color: var(--purple);
   color: white;
   width: 1440px;
+  margin-top:30px;
 }
 .footer-title {
   font-size: 25px;

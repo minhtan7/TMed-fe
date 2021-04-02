@@ -691,6 +691,7 @@ body {
 .react-date-picker__wrapper {
   padding: 5px !important;
   border-radius: 5px !important;
+  background-color: white;
 }
 
 .booking-calender {

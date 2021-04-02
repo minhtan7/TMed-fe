@@ -18,6 +18,7 @@ import SearchBar from "../components/SearchBar";
 import { useHistory, useLocation } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import HashLoader from "react-spinners/HashLoader";
+import Pagination from "react-js-pagination";
 
 const DoctorSearchPage = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,11 @@ const DoctorSearchPage = () => {
   );
   const sortByQuery = new URLSearchParams(search).get("sortBy");
   const [pageNum, setPageNum] = useState(1);
+  const handlePageChange = (pageNumber) => {
+    setPageNum(pageNumber);
+  };
   const doctors = useSelector((state) => state.doctor.doctors);
+  const totalPages = useSelector((state) => state.doctor.totalPages);
   useEffect(() => {
     console.log(pageNum);
     dispatch(
@@ -181,6 +186,21 @@ const DoctorSearchPage = () => {
               </div>
             </Col>
             <Col md="12" lg="8" xl="9">
+              <div>
+                <Pagination
+                  activePage={pageNum}
+                  itemsCountPerPage={10}
+                  totalItemsCount={totalPages * 10}
+                  pageCount={totalPages}
+                  pageRangeDisplayed={5}
+                  onChange={handlePageChange}
+                  itemClass={"paginationBttns"}
+                  itemClassLast={"previousBttn"}
+                  itemClassNext={"nextBttn"}
+                  disabledClass={"paginationDisabled"}
+                  activeClass={"paginationActive"}
+                />
+              </div>
               <ol>
                 {!doctors ? (
                   <div className="d-flex justify-content-center">

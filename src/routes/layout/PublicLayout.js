@@ -42,7 +42,7 @@ const PublicLayout = () => {
           <Route exact path="/search" component={DoctorSearchPage} />
 
           <Route exact path="/doctor/:id" component={DoctorDetailPage} />
-          <ProtectedRoute path="/booking/:id" component={BookingPage} />
+          <Route path="/booking/:id" component={BookingPage} />
           <ProtectedRoute path="/paying" component={PayingPage} />
           <ProtectedRoute path="/patient/me" component={PatientDashboard} />
           <ProtectedRoute

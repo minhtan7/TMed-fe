@@ -160,6 +160,22 @@ body {
     position: relative;
   }
 }
+.google-btn button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.facebook-btn {
+  margin-top: 20px;
+}
+.facebook-btn span {
+  width: 100%;
+}
+.facebook-btn button {
+  width: 100%;
+  padding: 10px;
+}
 
 /* -------------- Banner section */
 .section-1-banner {

@@ -103,24 +103,22 @@ const LoginPage = () => {
                   Don't have an account?{" "}
                   <Link to="/register/patient">Register</Link>
                 </div>
-                <Row>
-                  <div className="col-6">
-                    <GoogleLogin
-                      clientId={GOOGLE_CLIENT_ID}
-                      buttonText="Login with Google"
-                      onSuccess={(u) => oauthLogin(u, "google")}
-                      onFailure={() => console.log("Google Login Failure")}
-                    />
-                  </div>
-                  <div className="col-6">
-                    <FacebookLogin
-                      appId={FB_APP_ID}
-                      icon="fa-facebook"
-                      fields="name,email,picture"
-                      callback={(u) => oauthLogin(u, "facebook")}
-                      onFailure={() => console.log("Facebook Login Failure")}
-                    />
-                  </div>
+                <Row className="google-btn">
+                  <GoogleLogin
+                    clientId={GOOGLE_CLIENT_ID}
+                    buttonText="Login with Google"
+                    onSuccess={(u) => oauthLogin(u, "google")}
+                    onFailure={() => console.log("Google Login Failure")}
+                  />
+                </Row>
+                <Row className="facebook-btn">
+                  <FacebookLogin
+                    appId={FB_APP_ID}
+                    icon="fa-facebook"
+                    fields="name,email,picture"
+                    callback={(u) => oauthLogin(u, "facebook")}
+                    onFailure={() => console.log("Facebook Login Failure")}
+                  />
                 </Row>
               </Form>
             </Col>

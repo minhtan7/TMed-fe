@@ -112,10 +112,6 @@ const RegisterPage = () => {
                 <button className="btn btn-block btn-lg login-button btn-primary">
                   Sign up
                 </button>
-                <div className="login-or">
-                  <span className="or-line"></span>
-                  <span className="span-or"> or</span>
-                </div>
               </Form>
             </Col>
           </Row>

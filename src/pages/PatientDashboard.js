@@ -144,13 +144,13 @@ const PatientDashboard = () => {
               <Modal.Title>Appointment Detail</Modal.Title>
             </Modal.Header>
             <Modal.Body className="d-flex modal-appointment">
-              <div style={{ marginRight: "20px" }}>
-                <figure>
-                  <img
-                    src={appointment.doctor && appointment.doctor.avatarUrl}
-                    alt=""
-                  />
-                </figure>
+              <div className="patient-img">
+                <img
+                  className="rounded"
+                  src={appointment.doctor && appointment.doctor.avatarUrl}
+                  alt=""
+                  style={{ width: "8rem", height: "8rem" }}
+                />
               </div>
               <div>
                 <p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Dropdown, Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,15 +15,14 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(authActions.logout());
   };
-
   return (
-    <div className="nav nav-change ">
+    <header>
       <div className="nav-big fixed-top">
         <Link to="/" className="nav-center">
           <img
-            src="https://res.cloudinary.com/tanvo/image/upload/v1617216126/tmed-logo.white_eskth4.png"
+            src="https://res.cloudinary.com/tanvo/image/upload/v1617513851/tmed-logo-3_cv7wfz.png"
             alt=""
-            style={{ height: "auto", width: "inherit" }}
+            style={{ height: "80px", width: "auto" }}
           />
         </Link>
         <div className="nav-big-wrapper">
@@ -99,7 +98,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

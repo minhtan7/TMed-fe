@@ -8,12 +8,12 @@ const getList = ({
   limit,
   query,
   ownerId,
-  genderQuery,
+  districtQuery,
   specializationsQuery,
   sortByQuery,
 }) => async (dispatch) => {
   dispatch({ type: types.GET_ALL_DOCTOR_REQUEST });
-  console.log(pageNum, limit, sortByQuery, genderQuery, specializationsQuery);
+  console.log(pageNum, limit, sortByQuery, districtQuery, specializationsQuery);
   try {
     let queryString = "";
     if (query) {
@@ -26,11 +26,11 @@ const getList = ({
     if (!pageNum) {
       pageNum = 1;
     }
-    let genderString = `&gender=${genderQuery}`;
+    let districtString = `&district=${districtQuery}`;
     let specializationsString = `&specializations=${specializationsQuery}`;
     let sortByString = `&sortBy=${sortByQuery}`;
     const res = await api.get(
-      `/doctor?page=${pageNum}&limit=${limit}${queryString}${genderString}${specializationsString}${sortByString}`
+      `/doctor?page=${pageNum}&limit=${limit}${queryString}${districtString}${specializationsString}${sortByString}`
     );
     console.log(res.data.data);
     dispatch({ type: types.GET_ALL_DOCTOR_SUCCESS, payload: res.data.data });
@@ -43,7 +43,9 @@ const getSingleDoctor = (id) => async (dispatch) => {
   try {
     dispatch({ type: types.GET_SINGLE_DOCTOR_REQUEST });
     const res = await api.get(`/doctor/${id}`);
-    console.log(res);
+    /* const res = await fetch("http://localhost:5000/api/doctor/" + id);
+    const data = await res.json();
+    console.log("res", data); */
     dispatch({
       type: types.GET_SINGLE_DOCTOR_SUCCESS,
       payload: res.data.data,
@@ -129,6 +131,7 @@ const cancelAppointment = (id) => async (dispatch) => {
 
 const putDoctorProfile = (profile) => async (dispatch) => {
   try {
+    console.log(profile);
     dispatch({ type: types.PUT_DOCTOR_PROFILE_REQUEST });
     const res = await api.put(`/doctor/me`, profile);
     dispatch({

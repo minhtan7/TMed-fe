@@ -1,5 +1,6 @@
 import { Container } from "react-bootstrap";
 import { Switch, Route } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 import PublicNavbar from "../../components/PublicNavbar";
 import AlertMsg from "./AllerMsg";
@@ -19,24 +20,18 @@ import PatientDashboard from "../../pages/PatientDashboard";
 import BookingPage from "../../pages/BookingPage";
 import PayingPage from "../../pages/PayingPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AboutUs from "../../pages/AboutUs";
 
 const PublicLayout = () => {
   return (
     <>
       <Header />
-      <a href="#" className="back-top">
-        {" "}
-        <FontAwesomeIcon
-          icon={["fas", "angle-double-up"]}
-          className="mr-2"
-          size="lg"
-        />{" "}
-      </a>
 
       <Container fluid style={{ padding: 0 }}>
         <AlertMsg />
         <Switch>
           <Route exact path="/" component={Homepage} />
+          <Route exact path="/about" component={AboutUs} />
           <Route exact path="/register/:name" component={RegisterPage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/search" component={DoctorSearchPage} />
@@ -54,6 +49,15 @@ const PublicLayout = () => {
         </Switch>
       </Container>
       <Footer />
+
+      <a href="#" className="back-top">
+        {" "}
+        <FontAwesomeIcon
+          icon={["fas", "angle-double-up"]}
+          className="mr-2"
+          size="lg"
+        />{" "}
+      </a>
     </>
   );
 };

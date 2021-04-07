@@ -51,69 +51,67 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <div className="nav-2">fasff</div>
+      <div className="nav-3"></div>
       <div className="section-login">
         <Container>
           <Row className="">
-            <Col lg="6" md="7" className="login-left">
-              <img
-                src="https://doccure-laravel.dreamguystech.com/template-pediatric/public/assets/img/login-banner.png"
-                alt=""
-                className="img-fluid"
-              />
-            </Col>
-            <Col lg="6" md="12" className="login-right">
-              <div className="login-header">
-                <h3>
-                  {upperFirstLetter(name)} Register
-                  <Link to={`/register/${nameOpp}`}>
-                    Not a {upperFirstLetter(name)} ?
-                  </Link>
-                </h3>
-              </div>
-              <Form onSubmit={onSubmit}>
-                <Form.Group>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    onChange={onChange}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Enter Email"
-                    onChange={onChange}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control
-                    type="number"
-                    name="phone"
-                    placeholder="Mobile Number"
-                    onChange={onChange}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Create Password"
-                    onChange={onChange}
-                  />
-                </Form.Group>
-                <div className="text-right">
-                  <Link to="/login" className="forgot-link">
-                    Already have an account?
-                  </Link>
+            <Col lg="3"></Col>
+
+            <Col lg="6" md="12">
+              <div className="login-right">
+                <div className="login-header">
+                  <h3 style={{ fontSize: "25px", fontWeight: "800" }}>
+                    {upperFirstLetter(name)} Register
+                    <Link to={`/register/${nameOpp}`}>
+                      <small>Not a {upperFirstLetter(name)} ?</small>
+                    </Link>
+                  </h3>
                 </div>
-                <button className="btn btn-block btn-lg login-button btn-primary">
-                  Sign up
-                </button>
-              </Form>
+                <Form onSubmit={onSubmit} className="form-login">
+                  <Form.Group>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      placeholder="Name"
+                      onChange={onChange}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="Enter Email"
+                      onChange={onChange}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="number"
+                      name="phone"
+                      placeholder="Mobile Number"
+                      onChange={onChange}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      placeholder="Create Password"
+                      onChange={onChange}
+                    />
+                  </Form.Group>
+                  <div className="text-right">
+                    <Link to="/login" className="forgot-link">
+                      Already have an account?
+                    </Link>
+                  </div>
+                  <button className="btn btn-block btn-lg login-button btn-primary">
+                    Sign up
+                  </button>
+                </Form>
+              </div>
             </Col>
+            <Col lg="3"></Col>
           </Row>
         </Container>
       </div>

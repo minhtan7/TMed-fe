@@ -59,11 +59,11 @@ const Footer = () => {
         <Container>
           <Row>
             <Col>
-              <div className="footer-logo">
+              <div className="footer-logo mx-auto">
                 <img
-                  src="https://res.cloudinary.com/tanvo/image/upload/v1617216126/tmed-logo.white_eskth4.png"
+                  src="https://res.cloudinary.com/tanvo/image/upload/v1617513851/tmed-logo-3_cv7wfz.png"
                   alt=""
-                  style={{ width: "100%" }}
+                  style={{ width: "80%" }}
                 />
               </div>
               <div className="footer-about">
@@ -79,7 +79,10 @@ const Footer = () => {
           </Row>
         </Container>
       </div>
-      <div className="footer-bottom">@ Copyright Tan Vo 2021</div>
+      <div className="footer-bottom">
+        <div>@ Copyright TMed 2021 </div>
+        <div style={{ paddingRight: "5%" }}>Website developed by: Tan Vo</div>
+      </div>
     </div>
   );
 };

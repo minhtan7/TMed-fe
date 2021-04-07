@@ -64,7 +64,16 @@ const patientReducer = (state = initialState, action) => {
       };
     case types.PUT_RESERVATION_FEE_FAILURE:
       return { ...state, loading: false };
-
+    case types.GET_SINGLE_APPOINTMENT_REQUEST:
+      return { ...state, loading: true };
+    case types.GET_SINGLE_APPOINTMENT_SUCCESS:
+      return {
+        ...state,
+        appointment: payload.appointment,
+        loading: false,
+      };
+    case types.GET_SINGLE_APPOINTMENT_FAILURE:
+      return { ...state, loading: false };
     default:
       return state;
   }

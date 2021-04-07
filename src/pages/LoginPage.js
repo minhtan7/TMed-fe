@@ -54,74 +54,70 @@ const LoginPage = () => {
   };
   return (
     <div>
-      <div className="nav-2"></div>
+      <div className="nav-3"></div>
       <div className="section-login">
         <Container>
           <Row className="">
-            <Col lg="6" md="7" className="login-left">
-              <img
-                src="https://doccure-laravel.dreamguystech.com/template-pediatric/public/assets/img/login-banner.png"
-                alt=""
-                className="img-fluid"
-              />
-            </Col>
-            <Col lg="6" md="12" className="login-right">
-              <div className="login-header">
-                <h3> Login</h3>
-              </div>
-              <Form onSubmit={onSubmit}>
-                <Form.Group>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Enter Email"
-                    onChange={onChange}
-                  />
-                </Form.Group>
+            <Col lg="3"> </Col>
+            <Col lg="6" md="12">
+              <div className="login-right">
+                <div className="login-header">
+                  <h2 style={{ fontWeight: "800" }}> Login</h2>
+                </div>
+                <Form onSubmit={onSubmit} className="form-login">
+                  <Form.Group>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="Enter Email"
+                      onChange={onChange}
+                    />
+                  </Form.Group>
 
-                <Form.Group>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    placeholder="Create Password"
-                    onChange={onChange}
-                  />
-                </Form.Group>
-                <div className="text-right">
-                  <Link to="/login" className="forgot-link">
-                    Forgot password
-                  </Link>
-                </div>
-                <button className="btn btn-block btn-lg login-button btn-primary">
-                  Login
-                </button>
-                <div className="login-or">
-                  <span className="or-line"></span>
-                  <span className="span-or"> or</span>
-                </div>
-                <div className="dont-have">
-                  Don't have an account?{" "}
-                  <Link to="/register/patient">Register</Link>
-                </div>
-                <Row className="google-btn">
-                  <GoogleLogin
-                    clientId={GOOGLE_CLIENT_ID}
-                    buttonText="Login with Google"
-                    onSuccess={(u) => oauthLogin(u, "google")}
-                    onFailure={() => console.log("Google Login Failure")}
-                  />
-                </Row>
-                <Row className="facebook-btn">
-                  <FacebookLogin
-                    appId={FB_APP_ID}
-                    icon="fa-facebook"
-                    fields="name,email,picture"
-                    callback={(u) => oauthLogin(u, "facebook")}
-                    onFailure={() => console.log("Facebook Login Failure")}
-                  />
-                </Row>
-              </Form>
+                  <Form.Group>
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      placeholder="Create Password"
+                      onChange={onChange}
+                    />
+                  </Form.Group>
+                  <div className="text-right">
+                    <Link to="/login" className="forgot-link">
+                      Forgot password
+                    </Link>
+                  </div>
+                  <button className="btn btn-block btn-lg login-button btn-primary">
+                    Login
+                  </button>
+                  <div className="login-or">
+                    <span className="or-line"></span>
+                  </div>
+                  <div className="dont-have">
+                    Don't have an account?{" "}
+                    <Link to="/register/patient">Register</Link>
+                  </div>
+                  <Row className="google-btn">
+                    <GoogleLogin
+                      clientId={GOOGLE_CLIENT_ID}
+                      buttonText="Login with Google"
+                      onSuccess={(u) => oauthLogin(u, "google")}
+                      onFailure={() => console.log("Google Login Failure")}
+                    />
+                  </Row>
+                  <Row className="facebook-btn">
+                    <FacebookLogin
+                      appId={FB_APP_ID}
+                      icon="fa-facebook"
+                      fields="name,email,picture"
+                      callback={(u) => oauthLogin(u, "facebook")}
+                      onFailure={() => console.log("Facebook Login Failure")}
+                    />
+                  </Row>
+                </Form>
+              </div>
             </Col>
+            <Col lg="3"> </Col>
           </Row>
         </Container>
       </div>

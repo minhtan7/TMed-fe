@@ -19,10 +19,8 @@ const BookingPage = () => {
   const params = useParams();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const [showDoc, setShowDoc] = useState(false);
-  const handleCloseDoc = () => setShowDoc(false);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  console.log(isAuthenticated);
+
   const handleShow = (date, slot) => {
     if (!isAuthenticated) {
       history.push("/login");
@@ -33,10 +31,7 @@ const BookingPage = () => {
         patientActions.requestAppointmentIsPaidFalse(doctorId, date, slot, role)
       );
     } else {
-      setShowDoc(true);
-      dispatch(
-        patientActions.requestAppointmentIsPaidFalse(doctorId, date, slot, role)
-      );
+      toast.warning("Set your working day in Dashboard");
     }
   };
   const role = useSelector((state) => state.auth.role);
@@ -47,6 +42,9 @@ const BookingPage = () => {
   const [value, onChangeDate] = useState(new Date());
 
   const doctorId = params.id;
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   /* if (appointment && appointment.isPaid === true) {
     history.push("/patient/me");
@@ -108,39 +106,33 @@ const BookingPage = () => {
       newApps.push(y);
     }
   }
-  useEffect(() => {}, [newApps]);
-  console.log("apps", apps);
-  console.log("newApps", newApps);
 
-  /* useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
-    } */
-
-  /* const addPayPalScript = async () => {
-      const { data: clientId } = await api.get("/config/paypal");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
-      };
-      document.body.appendChild(script);
-    };
-
-    if (!order || successPay || successDeliver || order._id !== orderId) {
-      dispatch({ type: ORDER_PAY_RESET });
-      dispatch({ type: ORDER_DELIVER_RESET });
-      dispatch(getOrderDetails(orderId));
-    } else if (!order.isPaid) {
-      if (!window.paypal) {
-        addPayPalScript();
-      } else {
-        setSdkReady(true);
+  newApps.forEach((day, dayI) => {
+    let daysWork = doctor?.availableDaySlot.map((d) => {
+      return d.date;
+    });
+    doctor?.availableDaySlot.map((availableSlot) => {
+      if (
+        moment(day.date).format("dddd").toLowerCase() === availableSlot.date
+      ) {
+        if (availableSlot.shift === "16:00-18:30") {
+          for (let j = 0; j < 5; j++) {
+            day.slot[j][1] = "unavailable";
+          }
+        } else if (availableSlot.shift === "18:30:21:00") {
+          for (let j = 5; j < 10; j++) {
+            day.slot[j] = "unavailable";
+          }
+        }
       }
+    });
+    if (!daysWork.includes(moment(day.date).format("dddd").toLowerCase())) {
+      day.slot.forEach((subSlot) => {
+        subSlot[1] = "unavailable";
+      });
     }
-  }, [dispatch, orderId, successPay, successDeliver, order]); */
+  });
+  console.log("newApps", newApps);
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
@@ -185,6 +177,7 @@ const BookingPage = () => {
                 </figure>
               </div>
               <div>
+                <div>{appointment.status}</div>
                 <h4>
                   Doctor:{" "}
                   <span style={{ color: "green" }}>
@@ -228,13 +221,37 @@ const BookingPage = () => {
       <div className="nav nav-2"></div>
 
       <Container>
-        <div>
+        <div className="d-flex justify-content-around">
           {!doctor ? (
             <div className="d-flex justify-content-center">
               <HashLoader color="#74d1c6" />
             </div>
           ) : (
-            <DoctorCard doctor={doctor} />
+            <Row>
+              <Col>
+                <DoctorCard doctor={doctor ? doctor : null} />
+              </Col>
+              <Col className="d-flex align-items-center">
+                <table className=" booking-table">
+                  <tr>
+                    <th>Working days</th>
+                    <th>Office hour</th>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  {doctor.availableDaySlot.map((a) => {
+                    return (
+                      <tr>
+                        <td>{a.date}</td>
+                        <td>{a.shift}</td>
+                      </tr>
+                    );
+                  })}
+                </table>
+              </Col>
+            </Row>
           )}
         </div>
         <div className="d-flex justify-content-between mb-3">
@@ -247,10 +264,25 @@ const BookingPage = () => {
             value={value}
           />
           <div className="d-flex" style={{ margin: "auto 0" }}>
-            <div className="slot-catalog slot-available"> available </div>
-            <div className=" slot-catalog slot-request"> request </div>
-            <div className="slot-catalog slot-accepted">accepted </div>
+            <div
+              className={
+                role === "patient" ? "invisible" : "slot-catalog slot-request"
+              }
+            >
+              {" "}
+              request{" "}
+            </div>
+            <div
+              className={
+                role === "patient" ? "invisible" : "slot-catalog slot-accepted"
+              }
+            >
+              accepted{" "}
+            </div>
             <div className="slot-catalog slot-unavailable"> unavailable </div>
+            <div className="slot-content">
+              <div className="slot-catalog slot-available"> available </div>
+            </div>
           </div>
         </div>
         <div className="booking-calender">
@@ -291,36 +323,63 @@ const BookingPage = () => {
                   return (
                     <>
                       <Col className="slot-content">
-                        {a.slot.map((s) => {
-                          return (
-                            <div
-                              disabled={
-                                s[1] === "unavailable" ||
-                                s[1] === "accepted" ||
-                                s[1] === "request"
-                                  ? true
-                                  : false
-                              }
-                              onClick={() =>
-                                handleShow(a.date, a.slot.indexOf(s))
-                              }
-                              className={
-                                s[1] === "unavailable"
-                                  ? "slot-unavailable"
-                                  : s[1] === "request"
-                                  ? "slot-request"
-                                  : s[1] === "accepted"
-                                  ? "slot-accepted"
-                                  : s[1] === "cancel"
-                                  ? "slot-available"
-                                  : "slot-available"
-                              }
-                            >
-                              {" "}
-                              <span>{s[0]}</span>
-                            </div>
-                          );
-                        })}
+                        {role === "patient"
+                          ? a.slot.map((s) => {
+                              return (
+                                <div
+                                  disabled={
+                                    s[1] === "unavailable" ||
+                                    s[1] === "accepted" ||
+                                    s[1] === "request"
+                                      ? true
+                                      : false
+                                  }
+                                  onClick={() =>
+                                    handleShow(a.date, a.slot.indexOf(s))
+                                  }
+                                  className={
+                                    s[1] === "unavailable" ||
+                                    s[1] === "request" ||
+                                    s[1] === "accepted"
+                                      ? "slot-unavailable"
+                                      : "slot-available"
+                                  }
+                                >
+                                  {" "}
+                                  <span>{s[0]}</span>
+                                </div>
+                              );
+                            })
+                          : a.slot.map((s) => {
+                              return (
+                                <div
+                                  disabled={
+                                    s[1] === "unavailable" ||
+                                    s[1] === "accepted" ||
+                                    s[1] === "request"
+                                      ? true
+                                      : false
+                                  }
+                                  onClick={() =>
+                                    handleShow(a.date, a.slot.indexOf(s))
+                                  }
+                                  className={
+                                    s[1] === "unavailable"
+                                      ? "slot-unavailable"
+                                      : s[1] === "request"
+                                      ? "slot-request"
+                                      : s[1] === "accepted"
+                                      ? "slot-accepted"
+                                      : s[1] === "cancel"
+                                      ? "slot-available"
+                                      : "slot-available"
+                                  }
+                                >
+                                  {" "}
+                                  <span>{s[0]}</span>
+                                </div>
+                              );
+                            })}
                       </Col>
                     </>
                   );

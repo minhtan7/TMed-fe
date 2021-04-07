@@ -159,7 +159,14 @@ const DoctorSearchPage = () => {
                               >
                                 <option value="all">All Districts</option>
                                 {districts.map((d) => {
-                                  return <option value={d}>{d}</option>;
+                                  return (
+                                    <option
+                                      value={d}
+                                      style={{ textTransform: "capitalize" }}
+                                    >
+                                      {d.replace(/-/gi, " ")}
+                                    </option>
+                                  );
                                 })}
                               </Form.Control>
                             </Form.Group>

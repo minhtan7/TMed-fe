@@ -28,7 +28,7 @@ const doctorReducer = (state = initialState, action) => {
     case types.GET_SINGLE_DOCTOR_SUCCESS:
       return {
         ...state,
-        currentDoctor: payload.doctor,
+        currentDoctor: { ...payload.doctor },
         loading: false,
       };
     case types.GET_SINGLE_DOCTOR_FAILURE:

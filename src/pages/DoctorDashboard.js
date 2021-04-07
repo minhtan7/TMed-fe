@@ -8,6 +8,7 @@ import {
   Table,
   Form,
   Button,
+  Modal,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,6 +19,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { specializationActions } from "../redux/actions/specialization.action";
 import Pagination from "react-js-pagination";
 import HashLoader from "react-spinners/HashLoader";
+import DrapNDrop from "../components/DrapNDrop";
+import { patientActions } from "../redux/actions/patient.action";
 
 const moment = require("moment");
 
@@ -29,6 +32,7 @@ const DoctorDashboard = () => {
   );
   const totalPages = useSelector((state) => state.doctor.totalPages);
   const loading = useSelector((state) => state.doctor.loading);
+  const appointment = useSelector((state) => state.patient.appointment);
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -36,7 +40,9 @@ const DoctorDashboard = () => {
   const search = location.search;
 
   let query = new URLSearchParams(search).get("search");
-
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   let formatPhoneNumber = (str) => {
     //Filter only numbers from the input
     let cleaned = ("" + str).replace(/\D/g, "");
@@ -127,6 +133,269 @@ const DoctorDashboard = () => {
     setSearchName(e.target.value);
   };
 
+  const [dayOfWeek, setDayOfWeek] = useState([
+    { date: "sunday", shift: "", checked: false },
+    { date: "monday", shift: "", checked: false },
+    { date: "tuesday", shift: "", checked: false },
+    { date: "wednesday", shift: "", checked: false },
+    { date: "thursday", shift: "", checked: false },
+    { date: "friday", shift: "", checked: false },
+    { date: "saturday", shift: "", checked: false },
+  ]);
+
+  useEffect(() => {
+    if (doctor) {
+      /* turn the dayOfWeek into a new object that represent the 
+      available day base on the database */
+      let shadowDayOfWeek = [...dayOfWeek];
+      shadowDayOfWeek.forEach((day, index) => {
+        doctor.availableDaySlot.forEach((availableSlot) => {
+          if (day.date === availableSlot.date) {
+            shadowDayOfWeek[index].shift = availableSlot.shift;
+            shadowDayOfWeek[index].checked = true;
+          }
+        });
+      });
+      console.log(shadowDayOfWeek);
+      setDayOfWeek(shadowDayOfWeek);
+    }
+  }, [doctor]);
+  console.log(dayOfWeek);
+  /* const handleChecked = (e, params) => {
+    let shadowDayOfWeek = [...dayOfWeek];
+    shadowDayOfWeek[params.dayI].checked = !shadowDayOfWeek[params.dayI]
+      .checked;
+    if (!shadowDayOfWeek[params.dayI].checked) {
+      shadowDayOfWeek[params.dayI].status = "unavailable";
+    } else shadowDayOfWeek[params.dayI].status = "available";
+    setDayOfWeek(shadowDayOfWeek);
+  }; */
+  const onSubmitUpdateWorkingHour = (e) => {
+    e.preventDefault();
+    dispatch(doctorActions.putDoctorProfile({ dayOfWeek }));
+  };
+  const handleShift = (e, params) => {
+    let shadowDayOfWeek = [...dayOfWeek];
+    if (e.target.name === "16:00-18:30") {
+      if (shadowDayOfWeek[params.dayI].shift === "16:00-18:30") {
+        shadowDayOfWeek[params.dayI].shift = "";
+      } else if (shadowDayOfWeek[params.dayI].shift === "18:30-21:00") {
+        shadowDayOfWeek[params.dayI].shift = "16:00-21:00";
+      } else if (shadowDayOfWeek[params.dayI].shift === "16:00-21:00") {
+        shadowDayOfWeek[params.dayI].shift = "18:30-21:00";
+      } else shadowDayOfWeek[params.dayI].shift = "16:00-18:30";
+    } else {
+      //e.target.name==="18:30-21:00"
+
+      if (shadowDayOfWeek[params.dayI].shift === "16:00-18:30") {
+        shadowDayOfWeek[params.dayI].shift = "16:00-21:00";
+      } else if (shadowDayOfWeek[params.dayI].shift === "18:30-21:00") {
+        shadowDayOfWeek[params.dayI].shift = "";
+      } else if (shadowDayOfWeek[params.dayI].shift === "16:00-21:00") {
+        shadowDayOfWeek[params.dayI].shift = "16:00-18:30";
+      } else shadowDayOfWeek[params.dayI].shift = "18:30-21:00";
+    }
+
+    setDayOfWeek(shadowDayOfWeek);
+  };
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = (a) => {
+    setShow(true);
+    dispatch(patientActions.getSingleAppointment(a._id));
+    /* setAppointmentChosen(a._id); */
+  };
+  let time_slot = [
+    ["16:00", ""],
+    ["16:30", ""],
+    ["17:00", ""],
+    ["17:30", ""],
+    ["18:00", ""],
+    ["18:30", ""],
+    ["19:00", ""],
+    ["19:30", ""],
+    ["20:00", ""],
+    ["20:30", ""],
+  ];
+  const ModalDoctor = () => {
+    return (
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        {!appointment ? (
+          <div className="d-flex justify-content-center">
+            <HashLoader color="#74d1c6" />
+          </div>
+        ) : !appointment && appointment === undefined ? (
+          <div className="d-flex justify-content-center">
+            <HashLoader color="#74d1c6" />
+          </div>
+        ) : (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>Appointment Detail</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="d-flex modal-appointment">
+              <div className="patient-img">
+                <img
+                  className="rounded"
+                  src={appointment.patient && appointment.patient.avatarUrl}
+                  alt=""
+                  style={{ width: "8rem", height: "8rem" }}
+                />
+              </div>
+              <div>
+                <p>
+                  <strong>Patient:</strong>{" "}
+                  <p style={{ color: "green", fontSize: "25px" }}>
+                    {appointment.patient &&
+                      appointment.patient.children.childName}
+                  </p>{" "}
+                </p>
+                <p>
+                  <strong>DOB:</strong>{" "}
+                  <span>{appointment.patient?.children.dob}</span>
+                </p>
+                <p>
+                  <strong>Parent Name:</strong>{" "}
+                  <span style={{ fontStyle: "italic" }}>
+                    {appointment.patient && appointment.patient.parentName}
+                  </span>{" "}
+                </p>
+                <p>
+                  <strong>Appt date:</strong>{" "}
+                  <span tyle={{ fontStyle: "italic" }}>
+                    {moment(appointment.date).format("Do MMM YYYY")}
+                  </span>{" "}
+                </p>
+                <p>
+                  <strong>Time:</strong>{" "}
+                  <span style={{ fontStyle: "italic" }}>
+                    {time_slot[appointment.slot]}
+                  </span>
+                </p>
+                <div>
+                  <strong>Reservation fee:</strong> $5
+                </div>
+                <div>
+                  <strong>Status:</strong>{" "}
+                  <span
+                    className={`status-content ${
+                      appointment.status === "accepted"
+                        ? "accepted-content"
+                        : appointment.status === "cancel"
+                        ? "cancel-content"
+                        : appointment.status === "request"
+                        ? "request-content"
+                        : ""
+                    }`}
+                  >
+                    {appointment.status}
+                  </span>
+                </div>
+              </div>
+            </Modal.Body>
+          </>
+        )}
+      </Modal>
+    );
+  };
+
+  const WorkingDay = () => {
+    return (
+      <Row className="d-flex justify-content-center">
+        <Form
+          onSubmit={onSubmitUpdateWorkingHour}
+          style={{ width: "70%", textAlign: "center" }}
+        >
+          <table className="table-update-wk">
+            <tr>
+              <th style={{ borderRadius: "15px 0 0 0" }}>
+                <h2 style={{ fontWeight: "600" }}>Day</h2>
+              </th>
+              {/* <th>Available</th> */}
+              <th>
+                <h4 style={{ letterSpacing: "1px" }}>16:00 - 18:30</h4>
+              </th>
+              <th style={{ borderRadius: " 0 15px 0 0 " }}>
+                <h4 style={{ letterSpacing: "1px" }}>18:30 - 21:00</h4>
+              </th>
+            </tr>
+            {dayOfWeek &&
+              dayOfWeek.map((day, dayI) => {
+                return (
+                  <>
+                    {" "}
+                    <tr>
+                      <td>
+                        <strong>{capitalizeFirstLetter(day.date)}</strong>
+                      </td>
+                      {/* <td>
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            className="switch-box"
+                            checked={day.checked}
+                            onChange={(e) => handleChecked(e, { day, dayI })}
+                          />
+                          <span class="slider"></span>
+                        </label>
+                      </td> */}
+                      <td>
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            className="switch-box"
+                            checked={
+                              day.shift === "16:00-18:30" ||
+                              day.shift === "16:00-21:00"
+                                ? true
+                                : false
+                            }
+                            name="16:00-18:30"
+                            onChange={(e) => handleShift(e, { day, dayI })}
+                          />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="switch">
+                          <input
+                            type="checkbox"
+                            className="switch-box"
+                            checked={
+                              day.shift === "18:30-21:00" ||
+                              day.shift === "16:00-21:00"
+                                ? true
+                                : false
+                            }
+                            name="18:30-21:00"
+                            onChange={(e) => handleShift(e, { day, dayI })}
+                          />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                    </tr>
+                  </>
+                );
+              })}
+          </table>
+          <Button
+            style={{ marginTop: "20px" }}
+            type="submit"
+            className="booking-button"
+          >
+            <span>Submit </span>
+          </Button>
+        </Form>
+      </Row>
+    );
+  };
+
   return (
     <>
       <div className="nav nav-2"></div>
@@ -142,7 +411,7 @@ const DoctorDashboard = () => {
               <Row>
                 <Col sm={3}>
                   <Nav variant="pills" className="flex-column nav-info">
-                    <div style={{ padding: "20px" }}>
+                    <div>
                       <div className="patient-img">
                         <img
                           className="rounded"
@@ -152,15 +421,19 @@ const DoctorDashboard = () => {
                       </div>
                       <div className="patient-info">
                         <div style={{ marginTop: "20px" }}>
-                          <h3>Doc name: {doctor.name}</h3>
-                          <p>
-                            Email: <span>{doctor.email}</span>
+                          <h3>
+                            <strong>{doctor.name}</strong>
+                          </h3>
+                          <p style={{ marginBottom: "4px" }}>
+                            <span style={{ fontStyle: "italic" }}>
+                              {doctor.email}
+                            </span>
                           </p>
-                          <p>
-                            Phone:{" "}
+                          <p style={{ marginBottom: "4px" }}>
                             <span>{formatPhoneNumber(doctor.phone)}</span>
                           </p>
-                          <p>Balance: {doctor.balance}</p>
+
+                          <hr />
                         </div>
                       </div>
                     </div>
@@ -170,12 +443,15 @@ const DoctorDashboard = () => {
                     <Nav.Item className="dashboard-btn">
                       <Nav.Link eventKey="second">Profile</Nav.Link>
                     </Nav.Item>
+                    <Nav.Item className="dashboard-btn">
+                      <Nav.Link eventKey="third">Office hour</Nav.Link>
+                    </Nav.Item>
                   </Nav>
                 </Col>
                 <Col sm={9}>
                   <Tab.Content>
                     <Tab.Pane eventKey="first">
-                      <div className="d-flex justify-content-between nav-search">
+                      <div className="d-flex justify-content-between nav-search mb-4">
                         <form
                           style={{ position: "relative" }}
                           onSubmit={onSubmitSearch}
@@ -216,7 +492,7 @@ const DoctorDashboard = () => {
                       >
                         <thead>
                           <tr>
-                            <th>Doctor</th>
+                            <th>Patient</th>
                             <th>Appt date </th>
                             <th>Amount</th>
                             <th>Reservation fee</th>
@@ -232,8 +508,30 @@ const DoctorDashboard = () => {
                                 <td>{moment(a.date).format("ddd Do MMM")}</td>
                                 <td>$20</td>
                                 <td>$5</td>
-                                <td> {a.status}</td>
+                                <td>
+                                  <span
+                                    className={`status-content ${
+                                      a.status === "accepted"
+                                        ? "accepted-content"
+                                        : a.status === "cancel"
+                                        ? "cancel-content"
+                                        : a.status === "request"
+                                        ? "request-content"
+                                        : ""
+                                    }`}
+                                  >
+                                    {a.status}
+                                  </span>
+                                </td>
                                 <td className="d-flex">
+                                  <div>
+                                    <FontAwesomeIcon
+                                      icon={["fas", "eye"]}
+                                      className="mr-2 view-icon"
+                                      size="lg"
+                                      onClick={() => handleShow(a)}
+                                    />
+                                  </div>
                                   <div
                                     key={`${a._id}1`}
                                     onClick={() => {
@@ -383,11 +681,15 @@ const DoctorDashboard = () => {
                         </Form>
                       </div>
                     </Tab.Pane>
+                    <Tab.Pane eventKey="third">
+                      <WorkingDay />
+                    </Tab.Pane>
                   </Tab.Content>
                 </Col>
               </Row>
             </Tab.Container>
           )}
+          <ModalDoctor />
         </Container>
       </div>
     </>

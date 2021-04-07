@@ -19,15 +19,18 @@ import { useHistory, useLocation } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import HashLoader from "react-spinners/HashLoader";
 import Pagination from "react-js-pagination";
+import { ETIME } from "constants";
 
 const DoctorSearchPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const search = location.search;
+  console.log(search);
 
   const query = new URLSearchParams(search).get("search");
-  const genderQuery = new URLSearchParams(search).get("gender");
+
+  const districtQuery = new URLSearchParams(search).get("districts");
   const specializationsQuery = new URLSearchParams(search).get(
     "specializations"
   );
@@ -45,7 +48,7 @@ const DoctorSearchPage = () => {
         pageNum,
         limit: 10,
         query,
-        genderQuery,
+        districtQuery,
         specializationsQuery,
         sortByQuery,
       })
@@ -54,7 +57,7 @@ const DoctorSearchPage = () => {
   }, [
     dispatch,
     query,
-    genderQuery,
+    districtQuery,
     specializationsQuery,
     sortByQuery,
     pageNum,
@@ -68,7 +71,7 @@ const DoctorSearchPage = () => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   const [filter, setFilter] = useState({
-    gender: "all",
+    districts: "all",
     specializations: "all",
     sortBy: "all",
   });
@@ -76,7 +79,7 @@ const DoctorSearchPage = () => {
     e.preventDefault();
     console.log(filter);
     history.push(
-      `/search?gender=${filter.gender}&specializations=${filter.specializations}&sortBy=${filter.sortBy}`
+      `/search?districts=${filter.districts}&specializations=${filter.specializations}&sortBy=${filter.sortBy}`
     );
   };
   const onChange = (e) => {
@@ -86,19 +89,26 @@ const DoctorSearchPage = () => {
       specializations: e.target.value.toLowerCase(),
     });
   };
-  const onChangeGender = (e) => {
-    setFilter({ ...filter, gender: e.target.value.toLowerCase() });
+  const onChangeDistrict = (e) => {
+    setFilter({ ...filter, districts: e.target.value.toLowerCase() });
   };
 
   const onChangeSort = (e) => {
     setFilter({ ...filter, sortBy: e.target.value.toLowerCase() });
   };
+  const districts = [
+    "district-1",
+    "district-5",
+    "district-8",
+    "thu-duc-district",
+    "binh-thanh-district",
+  ];
 
   return (
     <>
       {" "}
       <div className="sort-bar nav-2">
-        <Container fluid>
+        <Container>
           <Row>
             <Col md="8" xs="12">
               {/* <Breadcrumb className="page-breadcrumb">
@@ -116,16 +126,17 @@ const DoctorSearchPage = () => {
         </Container>
       </div>
       <div className="search-content">
-        <Container fluid>
+        <Container>
           <Row>
             <Col>
-              <div>
-                <div className="search-filter">
-                  <Form onSubmit={onSubmit}>
-                    <Card>
-                      <Card.Header>Search Filter</Card.Header>
-                      <Card.Body>
-                        {/* <Card.Title>Sort by</Card.Title>
+              <div className="search-filter">
+                <Form onSubmit={onSubmit}>
+                  <Card className="border-0">
+                    <Card.Header className="font-weight-bold border-bottom-0 bg-white">
+                      Search Filter
+                    </Card.Header>
+                    <Card.Body className="text-center">
+                      {/* <Card.Title>Sort by</Card.Title>
                         <Card.Text>
                           <div>
                             <Form.Group controlId="exampleForm.ControlSelect1">
@@ -136,53 +147,57 @@ const DoctorSearchPage = () => {
                             </Form.Group>
                           </div>
                         </Card.Text> */}
-                        <Card.Title>Gender</Card.Title>
-                        <Card.Text>
-                          <div class="form-check">
-                            <div>
-                              <Form.Group controlId="exampleForm.ControlSelect1">
-                                <Form.Control
-                                  as="select"
-                                  onChange={onChangeGender}
-                                >
-                                  <option value="all">All Gender</option>
-                                  <option>Female</option>
-                                  <option>Male</option>
-                                </Form.Control>
-                              </Form.Group>
-                            </div>
-                          </div>
-                        </Card.Text>
-                        <Card.Title>Specialization</Card.Title>
-                        <Card.Text>
-                          <div class="form-check">
+                      {/* <Card.Title>Districts</Card.Title> */}
+                      <Card.Text>
+                        <div class="form-check">
+                          <div>
                             <Form.Group controlId="exampleForm.ControlSelect1">
-                              <Form.Control as="select" onChange={onChange}>
-                                <option value="all">All Specializations</option>
-                                {!specializations ? (
-                                  <div className="d-flex justify-content-center">
-                                    <HashLoader color="#74d1c6" />
-                                  </div>
-                                ) : (
-                                  specializations.map((s) => {
-                                    return (
-                                      <option>
-                                        {capitalizeFirstLetter(s.name)}
-                                      </option>
-                                    );
-                                  })
-                                )}
+                              <Form.Control
+                                as="select"
+                                onChange={onChangeDistrict}
+                              >
+                                <option value="all">All Districts</option>
+                                {districts.map((d) => {
+                                  return <option value={d}>{d}</option>;
+                                })}
                               </Form.Control>
                             </Form.Group>
                           </div>
-                        </Card.Text>
-                        <Button variant="primary" type="submit">
-                          Search
-                        </Button>
-                      </Card.Body>
-                    </Card>{" "}
-                  </Form>
-                </div>
+                        </div>
+                      </Card.Text>
+                      {/* <Card.Title>Specialization</Card.Title> */}
+                      <Card.Text>
+                        <div class="form-check">
+                          <Form.Group controlId="exampleForm.ControlSelect1">
+                            <Form.Control as="select" onChange={onChange}>
+                              <option value="all">All Specializations</option>
+                              {!specializations ? (
+                                <div className="d-flex justify-content-center">
+                                  <HashLoader color="#74d1c6" />
+                                </div>
+                              ) : (
+                                specializations.map((s) => {
+                                  return (
+                                    <option>
+                                      {capitalizeFirstLetter(s.name)}
+                                    </option>
+                                  );
+                                })
+                              )}
+                            </Form.Control>
+                          </Form.Group>
+                        </div>
+                      </Card.Text>
+                      <Button
+                        style={{ marginTop: "20px" }}
+                        type="submit"
+                        className="search-button"
+                      >
+                        <span>Search </span>
+                      </Button>
+                    </Card.Body>
+                  </Card>{" "}
+                </Form>
               </div>
             </Col>
             <Col md="12" lg="8" xl="9">
@@ -201,7 +216,7 @@ const DoctorSearchPage = () => {
                   activeClass={"paginationActive"}
                 />
               </div>
-              <ol>
+              <div className="d-flex flex-wrap justify-content-around">
                 {!doctors ? (
                   <div className="d-flex justify-content-center">
                     <HashLoader color="#74d1c6" />
@@ -211,7 +226,7 @@ const DoctorSearchPage = () => {
                     return <DoctorCard key={d._id} doctor={d} />;
                   })
                 )}
-              </ol>
+              </div>
             </Col>
           </Row>
         </Container>

@@ -134,7 +134,7 @@ const DoctorDetailPage = () => {
   return (
     <>
       <div className="nav nav-2"></div>
-      {doctor === null ? (
+      {doctor === null || doctor === undefined ? (
         <div className="d-flex justify-content-center">
           <HashLoader color="#74d1c6" />
         </div>
@@ -221,7 +221,7 @@ const DoctorDetailPage = () => {
                           Pham Ngoc Thach University of Medicine - Specialist in
                           <span style={{ color: "#e74e84" }}>
                             {" "}
-                            {capitalizeFirstLetter(doctor.specialization.name)}
+                            {doctor?.specialization.name}
                           </span>
                         </span>
                       </div>
@@ -232,8 +232,12 @@ const DoctorDetailPage = () => {
                         <Col lg="3">
                           <div className="review-avg">
                             <div style={{ position: "relative" }}>
-                              <strong>{doctor.avgRating &&
-                                  doctor.avgRating.toFixed(1)}{" "} </strong>
+
+                              <strong>
+                                {doctor.avgRating &&
+                                  doctor.avgRating.toFixed(1)}{" "}
+                              </strong>
+
                               <span>
                                 <FontAwesomeIcon
                                   icon={["fas", "star"]}
@@ -278,12 +282,12 @@ const DoctorDetailPage = () => {
                       </Row>
                       <hr />
                       <div id="review">
-                        {doctor.reviews.map((r) => {
+                        {doctor?.reviews.map((r) => {
                           return (
                             <div className="review-box">
                               <figure className="figure ">
                                 <img
-                                  src={r.patient.avatarUrl}
+                                  src={r.patient?.avatarUrl}
                                   alt=""
                                   className="figure-img img-fluid review-img"
                                 />
@@ -300,7 +304,7 @@ const DoctorDetailPage = () => {
                                     starSpacing="0"
                                   />{" "}
                                   <span className="review-name">
-                                    {r.patient.parentName} - create At{" "}
+                                    {r.patient?.parentName} - create At{" "}
                                     {moment(r.createdAt).format("Do MM YYYY")}
                                   </span>
                                 </div>
@@ -387,13 +391,13 @@ const DoctorDetailPage = () => {
                         })}
                       </div>
                     </div>
-
                     <Button
                       style={{ marginTop: "20px" }}
                       as={Link}
                       to={`/booking/${doctor._id}`}
+                      className="booking-button"
                     >
-                      Book now
+                      <span>Book now </span>
                     </Button>
                   </div>
                 </Col>

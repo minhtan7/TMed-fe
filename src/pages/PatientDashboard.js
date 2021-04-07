@@ -9,6 +9,7 @@ import {
   Table,
   Form,
   Button,
+  Modal,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,9 +20,22 @@ import DatePicker from "react-date-picker";
 const moment = require("moment");
 
 const PatientDashboard = () => {
+  let time_slot = [
+    ["16:00", ""],
+    ["16:30", ""],
+    ["17:00", ""],
+    ["17:30", ""],
+    ["18:00", ""],
+    ["18:30", ""],
+    ["19:00", ""],
+    ["19:30", ""],
+    ["20:00", ""],
+    ["20:30", ""],
+  ];
   const [key, setKey] = useState("home");
   const patient = useSelector((state) => state.patient.currentPatient);
   const loading = useSelector((state) => state.patient.loading);
+  const appointment = useSelector((state) => state.patient.appointment);
   const dispatch = useDispatch();
   const [dob, setDob] = useState(new Date());
   let [profile, setProfile] = useState({
@@ -100,6 +114,98 @@ const PatientDashboard = () => {
   const handleCancel = (id) => {
     dispatch(patientActions.cancelAppointment(id));
   };
+  const [show, setShow] = useState(false);
+  /* const [appointmentChosen, setAppointmentChosen] = useState(""); */
+  const handleClose = () => setShow(false);
+  const handleShow = (a) => {
+    setShow(true);
+    dispatch(patientActions.getSingleAppointment(a._id));
+    /* setAppointmentChosen(a._id); */
+  };
+  const ModalPatient = () => {
+    return (
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        {!appointment ? (
+          <div className="d-flex justify-content-center">
+            <HashLoader color="#74d1c6" />
+          </div>
+        ) : !appointment && appointment === undefined ? (
+          <div className="d-flex justify-content-center">
+            <HashLoader color="#74d1c6" />
+          </div>
+        ) : (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>Appointment Detail</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="d-flex modal-appointment">
+              <div style={{ marginRight: "20px" }}>
+                <figure>
+                  <img
+                    src={appointment.doctor && appointment.doctor.avatarUrl}
+                    alt=""
+                  />
+                </figure>
+              </div>
+              <div>
+                <p>
+                  <strong>Assigned doctor:</strong>{" "}
+                  <p style={{ color: "green", fontSize: "25px" }}>
+                    {appointment.doctor && appointment.doctor.name}
+                  </p>{" "}
+                </p>
+                <p>
+                  <strong>Address:</strong>{" "}
+                  <span style={{ fontStyle: "italic" }}>
+                    {appointment.doctor &&
+                      appointment.doctor.profile &&
+                      appointment.doctor &&
+                      appointment.doctor.profile.address}
+                  </span>{" "}
+                </p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  <span tyle={{ fontStyle: "italic" }}>
+                    {moment(appointment.date).format("Do MMM YYYY")}
+                  </span>{" "}
+                </p>
+                <p>
+                  <strong>Time:</strong>{" "}
+                  <span style={{ fontStyle: "italic" }}>
+                    {time_slot[appointment.slot]}
+                  </span>
+                </p>
+                <div>
+                  <strong>Reservation fee:</strong> $5
+                </div>
+                <div>
+                  <strong>Status:</strong>{" "}
+                  <span
+                    className={`status-content ${
+                      appointment.status === "accepted"
+                        ? "accepted-content"
+                        : appointment.status === "cancel"
+                        ? "cancel-content"
+                        : appointment.status === "request"
+                        ? "request-content"
+                        : ""
+                    }`}
+                  >
+                    {appointment.status}
+                  </span>
+                </div>
+              </div>
+            </Modal.Body>
+          </>
+        )}
+      </Modal>
+    );
+  };
   return (
     <>
       <div className="nav nav-2"></div>
@@ -124,7 +230,9 @@ const PatientDashboard = () => {
                         />
                       </div>
                       <div className="patient-info">
-                        <h3>Child Name: {patient.children.childName}</h3>
+                        <h3 style={{ marginTop: "20px", fontSize: "19px" }}>
+                          <strong>{patient.children.childName}</strong>
+                        </h3>
                         <div>
                           <FontAwesomeIcon
                             icon={["fas", "birthday-cake"]}
@@ -134,15 +242,20 @@ const PatientDashboard = () => {
                           {moment(patient.children.dob).format("Do MMM YYYY")}
                         </div>
                         <div style={{ marginTop: "20px" }}>
-                          <h3>Parent name: {patient.name}</h3>
-                          <p>
-                            Email: <span>{patient.email}</span>
+                          <h3>
+                            Parent name: <strong>{patient.parentName}</strong>
+                          </h3>
+                          <p style={{ marginBottom: "4px" }}>
+                            <span style={{ fontStyle: "italic" }}>
+                              {patient.email}
+                            </span>
                           </p>
-                          <p>
-                            Phone:{" "}
+                          <p style={{ marginBottom: "4px" }}>
                             <span>{formatPhoneNumber(patient.phone)}</span>
                           </p>
-                          <p>Balance: {patient.balance}</p>
+                          <p>
+                            Balance: <strong>${patient.balance}</strong>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -182,17 +295,41 @@ const PatientDashboard = () => {
                                   </td>
                                   <td>$20</td>
                                   <td>$5</td>
-                                  <td> {a.status}</td>
                                   <td>
+                                    {" "}
                                     <div
-                                      onClick={() => handleCancel(a._id)}
-                                      className="cancel-but"
+                                      className={`status-content ${
+                                        a.status === "accepted"
+                                          ? "accepted-content"
+                                          : a.status === "cancel"
+                                          ? "cancel-content"
+                                          : a.status === "request"
+                                          ? "request-content"
+                                          : ""
+                                      }`}
                                     >
+                                      {" "}
+                                      {a.status}
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="cancel-but pdl-4">
                                       <FontAwesomeIcon
-                                        icon={["fas", "minus-circle"]}
-                                        className="mr-2"
+                                        icon={["fas", "eye"]}
+                                        className="mr-2 view-icon"
                                         size="lg"
+                                        onClick={() => handleShow(a)}
                                       />
+                                      {a.status === "cancel" ? (
+                                        ""
+                                      ) : (
+                                        <FontAwesomeIcon
+                                          icon={["fas", "minus-circle"]}
+                                          className="mr-2"
+                                          size="lg"
+                                          onClick={() => handleCancel(a._id)}
+                                        />
+                                      )}
                                     </div>
                                   </td>
                                 </tr>
@@ -312,6 +449,7 @@ const PatientDashboard = () => {
           )}
         </Container>
       </div>
+      <ModalPatient />
     </>
   );
 };

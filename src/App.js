@@ -55,6 +55,13 @@ import {
   faAngleDoubleUp,
   faExclamationTriangle,
   faUpload,
+  faArrowRight,
+  faInfoCircle,
+  faUserMd,
+  faCalendarWeek,
+  faEye,
+  faToggleOn,
+  faToggleOff,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -105,15 +112,21 @@ library.add(
   faStar,
   faAngleDoubleUp,
   faExclamationTriangle,
-  faUpload
+  faUpload,
+  faArrowRight,
+  faInfoCircle,
+  faUserMd,
+  faCalendarWeek,
+  faEye,
+  faToggleOn,
+  faToggleOff
 );
+
 function App() {
   return (
-    <div>
-      <Router>
-        <Routes />
-      </Router>
-    </div>
+    <Router>
+      <Routes />
+    </Router>
   );
 }
 

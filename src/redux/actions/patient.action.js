@@ -115,6 +115,22 @@ const addReivew = (contentReview, star, doctorId) => async (dispatch) => {
     });
   }
 };
+const getSingleAppointment = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_SINGLE_APPOINTMENT_REQUEST });
+    const res = await api.get(`/appointment/${id}`);
+    dispatch({
+      type: types.GET_SINGLE_APPOINTMENT_SUCCESS,
+      payload: res.data.data,
+    });
+    /* dispatch(doctorActions.getSingleDoctor(doctorId)); */
+  } catch (err) {
+    dispatch({
+      type: types.GET_SINGLE_APPOINTMENT_FAILURE,
+      payload: err,
+    });
+  }
+};
 
 export const patientActions = {
   getPatientMe,
@@ -123,4 +139,5 @@ export const patientActions = {
   requestAppointmentIsPaidFalse,
   requestAppointment,
   addReivew,
+  getSingleAppointment,
 };

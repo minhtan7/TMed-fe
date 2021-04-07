@@ -41,6 +41,7 @@ const DoctorSearchPage = () => {
   };
   const doctors = useSelector((state) => state.doctor.doctors);
   const totalPages = useSelector((state) => state.doctor.totalPages);
+  const totalDoctors = useSelector((state) => state.doctor.totalDoctors);
   useEffect(() => {
     console.log(pageNum);
     dispatch(
@@ -116,7 +117,7 @@ const DoctorSearchPage = () => {
                 <Breadcrumb.Item active>Search</Breadcrumb.Item>
               </Breadcrumb> */}
               <h2 className="breadcrumb-title">
-                {doctors && doctors.length} doctors matches found
+                {totalDoctors ? totalDoctors : 0} doctors matches found
               </h2>
             </Col>
             <Col md="4" xs="12" className="d-none d-md-block ">
@@ -205,7 +206,7 @@ const DoctorSearchPage = () => {
                 <Pagination
                   activePage={pageNum}
                   itemsCountPerPage={10}
-                  totalItemsCount={totalPages * 10}
+                  totalItemsCount={totalDoctors}
                   pageCount={totalPages}
                   pageRangeDisplayed={5}
                   onChange={handlePageChange}

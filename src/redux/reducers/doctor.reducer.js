@@ -4,6 +4,7 @@ const initialState = {
   currentDoctor: null,
   loading: false,
   totalPages: 1,
+  totalDoctors: null,
   appointment: {},
   sevenDaysAppointments: {},
 };
@@ -18,6 +19,7 @@ const doctorReducer = (state = initialState, action) => {
         ...state,
         doctors: payload.doctors,
         totalPages: payload.totalPages,
+        totalDoctors: payload.totalDoctors,
         loading: false,
       };
     case types.GET_ALL_DOCTOR_FAILURE:

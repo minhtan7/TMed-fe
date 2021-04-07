@@ -29,8 +29,17 @@ const DoctorCard = ({ doctor }) => {
           <img src={doctor.avatarUrl} alt="" />
           <div className="circle-card-hover">
             <div className="circle-card-title">Dr. {doctor.name}</div>
-            <div>{capitalizeFirstLetter(doctor.specialization.name)}</div>
-            <div></div>
+            <div style={{ margin: "4px 0" }}>
+              {capitalizeFirstLetter(doctor.specialization.name)}
+            </div>
+            <StarRatings
+              rating={doctor && doctor.avgRating}
+              starRatedColor="#ffa41b"
+              numberOfStars={5}
+              name="rating"
+              starDimension="20px"
+              starSpacing="0"
+            />
             <div className="d-flex">
               <Link to={`doctor/${doctor._id}`}>
                 <div

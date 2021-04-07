@@ -30,11 +30,15 @@ const BookingPage = () => {
       dispatch(
         patientActions.requestAppointmentIsPaidFalse(doctorId, date, slot, role)
       );
-    } else {
+    } else if (role === "doctor") {
       toast.warning("Set your working day in Dashboard");
+    } else {
+      toast.warning("You have to log in first");
     }
   };
+
   const role = useSelector((state) => state.auth.role);
+
   const doctor = useSelector((state) => state.doctor.currentDoctor);
   const appointment = useSelector((state) => state.patient.appointment);
   const loading = useSelector((state) => state.doctor.loading);
@@ -165,22 +169,21 @@ const BookingPage = () => {
         ) : (
           <>
             <Modal.Header closeButton>
-              <Modal.Title>Booking Detail</Modal.Title>
+              <Modal.Title>Appointment Detail</Modal.Title>
             </Modal.Header>
             <Modal.Body className="d-flex modal-appointment">
-              <div style={{ marginRight: "20px" }}>
-                <figure>
-                  <img
-                    src={appointment.doctor && appointment.doctor.avatarUrl}
-                    alt=""
-                  />
-                </figure>
+              <div className="patient-img">
+                <img
+                  className="rounded"
+                  src={appointment.doctor && appointment.doctor.avatarUrl}
+                  alt=""
+                  style={{ width: "8rem", height: "8rem" }}
+                />
               </div>
               <div>
-                <div>{appointment.status}</div>
                 <h4>
                   Doctor:{" "}
-                  <span style={{ color: "green" }}>
+                  <span style={{ color: "green", fontSize: "25px" }}>
                     {appointment.doctor && appointment.doctor.name}
                   </span>{" "}
                 </h4>
@@ -205,7 +208,25 @@ const BookingPage = () => {
                     {time_slot[appointment.slot]}
                   </span>
                 </p>
-                <div>Reservation fee: $5</div>
+                <div>
+                  <strong>Reservation fee:</strong> $5
+                </div>
+                <div>
+                  <strong>Status:</strong>{" "}
+                  <span
+                    className={`status-content ${
+                      appointment.status === "accepted"
+                        ? "accepted-content"
+                        : appointment.status === "cancel"
+                        ? "cancel-content"
+                        : appointment.status === "request"
+                        ? "request-content"
+                        : ""
+                    }`}
+                  >
+                    {appointment.status}
+                  </span>
+                </div>
               </div>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-center">
@@ -266,7 +287,9 @@ const BookingPage = () => {
           <div className="d-flex" style={{ margin: "auto 0" }}>
             <div
               className={
-                role === "patient" ? "invisible" : "slot-catalog slot-request"
+                role === "patient" || role === ""
+                  ? "invisible"
+                  : "slot-catalog slot-request"
               }
             >
               {" "}
@@ -274,7 +297,9 @@ const BookingPage = () => {
             </div>
             <div
               className={
-                role === "patient" ? "invisible" : "slot-catalog slot-accepted"
+                role === "patient" || role === ""
+                  ? "invisible"
+                  : "slot-catalog slot-accepted"
               }
             >
               accepted{" "}
@@ -323,7 +348,7 @@ const BookingPage = () => {
                   return (
                     <>
                       <Col className="slot-content">
-                        {role === "patient"
+                        {role === "patient" || role === ""
                           ? a.slot.map((s) => {
                               return (
                                 <div

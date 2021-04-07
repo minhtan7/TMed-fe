@@ -17,6 +17,7 @@ import { patientActions } from "../redux/actions/patient.action";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HashLoader from "react-spinners/HashLoader";
 import DatePicker from "react-date-picker";
+import StarRatings from "react-star-ratings";
 const moment = require("moment");
 
 const PatientDashboard = () => {
@@ -116,7 +117,9 @@ const PatientDashboard = () => {
   };
   const [show, setShow] = useState(false);
   /* const [appointmentChosen, setAppointmentChosen] = useState(""); */
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+  };
   const handleShow = (a) => {
     setShow(true);
     dispatch(patientActions.getSingleAppointment(a._id));
@@ -206,6 +209,93 @@ const PatientDashboard = () => {
       </Modal>
     );
   };
+  /* let [contentReview, setContentReview] = useState({ title: "", body: "" });
+  const handleChangeReview = (e) => {
+    setContentReview({ ...contentReview, [e.target.name]: e.target.value });
+  };
+  const [doctorAppt, setDoctorAppt] = useState(null);
+  const onSubmitReview = (e) => {
+    e.preventDefault();
+    console.log(doctorAppt);
+    dispatch(patientActions.addReivew(contentReview, star, doctorAppt._id));
+    setContentReview({ title: "", body: "" });
+    setStar(0);
+    e.target.reset();
+  };
+  const [showReview, setShowReview] = useState(false);
+  const [star, setStar] = useState(0);
+  const ratingRange = ["Very Poor", "Poor", "Average", "Good", "Excellent"];
+  const handleShowReview = (a) => {
+    setShowReview(true);
+    dispatch(patientActions.getSingleAppointment(a._id));
+  };
+  const handleRate = (r) => {
+    setStar(r);
+  };
+
+  const ModalReview = (a) => {
+    return (
+      <Modal show={showReview} onHide={handleClose} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>Appointment Detail</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="d-flex modal-appointment">
+          <div>
+            <div className="d-flex justify-content-between">
+              <h3 style={{ marginBottom: "20px" }}>Write a review</h3>
+              <div>
+                {star === 0 ? (
+                  <span style={{ marginRight: "20px" }}>Rate me!</span>
+                ) : (
+                  ratingRange.map((r, index) => {
+                    if (index + 1 === star)
+                      return (
+                        <span style={{ marginRight: "20px" }}>
+                          {ratingRange[index]}
+                        </span>
+                      );
+                  })
+                )}
+                <StarRatings
+                  rating={star}
+                  starRatedColor="#ffa41b"
+                  changeRating={(r) => handleRate(r)}
+                  numberOfStars={5}
+                  name="rating"
+                  starDimension="1.5rem"
+                  starSpacing="0"
+                />{" "}
+              </div>
+            </div>
+
+            <Form onSubmit={onSubmitReview} style={{ textAlign: "end" }}>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Control
+                  as="textarea"
+                  rows={1}
+                  onChange={handleChangeReview}
+                  name="title"
+                  placeholder="Title"
+                />
+              </Form.Group>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  onChange={handleChangeReview}
+                  name="body"
+                  placeholder="Write something here"
+                />
+              </Form.Group>
+
+              <Button type="submit">Submit</Button>
+            </Form>
+          </div>
+        </Modal.Body>
+      </Modal>
+    );
+  }; */
+
   return (
     <>
       <div className="nav nav-2"></div>
@@ -330,6 +420,12 @@ const PatientDashboard = () => {
                                           onClick={() => handleCancel(a._id)}
                                         />
                                       )}
+                                      {/* <FontAwesomeIcon
+                                        icon={["fas", "star"]}
+                                        className="mr-2 view-icon"
+                                        size="lg"
+                                        onClick={() => handleShowReview(a)}
+                                      /> */}
                                     </div>
                                   </td>
                                 </tr>
@@ -450,6 +546,7 @@ const PatientDashboard = () => {
         </Container>
       </div>
       <ModalPatient />
+      {/* <ModalReview /> */}
     </>
   );
 };

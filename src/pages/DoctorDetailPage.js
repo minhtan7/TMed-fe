@@ -232,7 +232,6 @@ const DoctorDetailPage = () => {
                         <Col lg="3">
                           <div className="review-avg">
                             <div style={{ position: "relative" }}>
-
                               <strong>
                                 {doctor.avgRating &&
                                   doctor.avgRating.toFixed(1)}{" "}

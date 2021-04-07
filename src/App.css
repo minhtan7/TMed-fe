@@ -47,6 +47,11 @@ html {
   border-radius: 3px;
   font-weight: 600;
 }
+
+.dropdown-item.active {
+  background-color: var(--dark-green);
+  color: white !important;
+}
 /* ----------------------------
 ---------------------------- NEW HOMEPAGE
 ----------------------------
@@ -663,9 +668,6 @@ html {
 
   margin-top: 30px;
   border-top: 1px solid var(--gray-3);
-
-
-
 }
 .footer-title {
   font-size: 25px;
@@ -1004,6 +1006,7 @@ html {
 
 .nav-link.active {
   background-color: var(--light-green) !important;
+  color: white !important;
 }
 .nav-item a {
   color: black;

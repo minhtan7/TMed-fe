@@ -43,7 +43,9 @@ const BookingPage = () => {
   const appointment = useSelector((state) => state.patient.appointment);
   const loading = useSelector((state) => state.doctor.loading);
   const apps = useSelector((state) => state.doctor.sevenDaysAppointments);
-  const [value, onChangeDate] = useState(new Date());
+  let date = moment().add(1, "days");
+
+  const [value, onChangeDate] = useState(date.toDate());
 
   const doctorId = params.id;
   function capitalizeFirstLetter(string) {
@@ -145,7 +147,7 @@ const BookingPage = () => {
     );
   };
 
-  let date = moment();
+  console.log(date);
   let maxDate = moment().add(7, "days"); //add will change the maxDate
   const ModalDoctor = () => {
     return <></>;

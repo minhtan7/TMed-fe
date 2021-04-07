@@ -660,8 +660,12 @@ html {
   background-color: white;
   color: var(--gray-1);
   width: 1440px;
+
   margin-top: 30px;
   border-top: 1px solid var(--gray-3);
+
+
+
 }
 .footer-title {
   font-size: 25px;
@@ -1134,11 +1138,13 @@ input:checked + .slider {
 .react-date-picker__wrapper {
   padding: 5px !important;
   border-radius: 5px !important;
+  background-color: white;
 }
 
 .booking-calender {
   border: 1px solid #f0f0f0;
   border-radius: 4px;
+  background-color: white;
 }
 .booking-calendar-header {
   padding: 10px 20px;

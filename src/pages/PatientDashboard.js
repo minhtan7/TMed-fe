@@ -77,8 +77,7 @@ const PatientDashboard = () => {
         setProfile({ ...profile, avatarUrl: result.info.url });
       }
     }
-  );
-
+  ); 
   /* const uploadImage = async () => {
     const form = new FormData();
     form.append("file", image);

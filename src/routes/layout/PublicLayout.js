@@ -7,7 +7,7 @@ import AlertMsg from "./AllerMsg";
 import ProtectedRoute from "../ProtectedRoute";
 import Homepage from "../../pages/Homepage";
 import RegisterPage from "../../pages/RegisterPage";
-
+import VerifyPage from "../../pages/VerifyPage";
 import NotFoundPage from "../../pages/NotFoundPage";
 import LoginPage from "../../pages/LoginPage";
 import AdminPage from "../../pages/AdminPage";
@@ -37,7 +37,8 @@ const PublicLayout = () => {
           <Route exact path="/search" component={DoctorSearchPage} />
 
           <Route exact path="/doctor/:id" component={DoctorDetailPage} />
-          <Route path="/booking/:id" component={BookingPage} />
+          <Route exact path="/booking/:id" component={BookingPage} />
+          <Route path="/verify" component={VerifyPage} />
           <ProtectedRoute path="/paying" component={PayingPage} />
           <ProtectedRoute path="/patient/me" component={PatientDashboard} />
           <ProtectedRoute

@@ -39,8 +39,19 @@ const logout = () => (dispatch) => {
   dispatch({ type: types.LOGOUT_SUCCESS, payload: null });
 };
 
+const verifyEmail = (code) => async (dispatch) => {
+  dispatch({ type: types.VERIFY_EMAIL_REQUEST, payload: null });
+  try {
+    const res = await api.post("/auth/verify", { code });
+    dispatch({ type: types.VERIFY_EMAIL_SUCCESS, payload: res.user });
+  } catch (error) {
+    dispatch({ type: types.VERIFY_EMAIL_FAILURE, payload: error });
+  }
+};
+
 export const authActions = {
   register,
   login,
   logout,
+  verifyEmail,
 };

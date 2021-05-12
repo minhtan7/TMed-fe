@@ -103,7 +103,7 @@ const DoctorDetailPage = () => {
             <h4>DR. {doctor.name}</h4>
             <div style={{ marginBottom: "15px" }}>
               <StarRatings
-                rating={5}
+                rating={doctor.avgRating}
                 starRatedColor="#ffa41b"
                 changeRating={() => console.log("haha")}
                 numberOfStars={5}

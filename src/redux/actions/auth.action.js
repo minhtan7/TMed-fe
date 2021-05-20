@@ -26,16 +26,14 @@ const login = (profile) => async (dispatch) => {
     }
     dispatch({ type: types.LOGIN_SUCCESS, payload: res.data.data });
     toast.success("Login Successfully");
-    document.location.href = "/";
   } catch (err) {
     dispatch({ type: types.LOGIN_FAILURE, payload: err });
   }
 };
 const logout = () => (dispatch) => {
   delete api.defaults.headers.common["Authorization"];
-  localStorage.setItem("accessToken", "");
-  localStorage.setItem("role", "");
-  document.location.href = "/";
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("role");
   dispatch({ type: types.LOGOUT_SUCCESS, payload: null });
 };
 

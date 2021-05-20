@@ -48,7 +48,6 @@ const PatientDashboard = () => {
     gender: "",
     avatarUrl: "",
   });
-  console.log(dob);
   useEffect(() => {
     dispatch(patientActions.getPatientMe());
   }, [dispatch]);
@@ -77,7 +76,7 @@ const PatientDashboard = () => {
         setProfile({ ...profile, avatarUrl: result.info.url });
       }
     }
-  ); 
+  );
   /* const uploadImage = async () => {
     const form = new FormData();
     form.append("file", image);

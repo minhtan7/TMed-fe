@@ -17,11 +17,13 @@ const authReducer = (state = initialState, action) => {
     case types.LOGIN_REQUEST:
 
     case types.LOGIN_SUCCESS:
-      return { ...state, isAuthenticated: true };
+      const role = localStorage.getItem("role");
+      return { ...state, isAuthenticated: true, role: role };
     case types.LOGIN_FAILURE:
     case types.LOGOUT_REQUEST:
 
     case types.LOGOUT_SUCCESS:
+      return { ...state, isAuthenticated: false };
     case types.LOGOUT_FAILURE:
     default:
       return state;

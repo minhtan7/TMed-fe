@@ -46,6 +46,7 @@ const getSingleDoctor = (id) => async (dispatch) => {
     /* const res = await fetch("http://localhost:5000/api/doctor/" + id);
     const data = await res.json();
     console.log("res", data); */
+    console.log("res", res);
     dispatch({
       type: types.GET_SINGLE_DOCTOR_SUCCESS,
       payload: res.data.data,

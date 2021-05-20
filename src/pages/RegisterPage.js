@@ -1,7 +1,13 @@
 import React from "react";
 
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
-import { Link, useParams, useLocation, useHistory } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useLocation,
+  useHistory,
+  Redirect,
+} from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,6 +54,9 @@ const RegisterPage = () => {
       history.push(redirect);
     }
   }, [history, userInfo, redirect]);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  if (isAuthenticated) return <Redirect to="/" />;
 
   return (
     <div>

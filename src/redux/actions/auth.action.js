@@ -36,11 +36,7 @@ const loginWithProvider = (user, authProvider) => async (dispatch) => {
   dispatch({ type: types.LOGIN_WITH_PROVIDER_REQUEST });
   try {
     console.log(user, authProvider);
-    const accessToken = user.accessToken;
-    const res = await api.post(`auth/login/${authProvider}`, {
-      accessToken,
-      user,
-    });
+    const res = await api.post(`auth/login/${authProvider}`, user);
     localStorage.setItem("role", "patient");
     dispatch({
       type: types.LOGIN_WITH_PROVIDER_SUCCESS,

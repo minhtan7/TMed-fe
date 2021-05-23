@@ -39,17 +39,16 @@ const loginWithProvider = (user, authProvider) => async (dispatch) => {
   try {
     console.log(user, authProvider);
 
-    /* const res = await api.post(`auth/login/${authProvider}`, user); */
+    const res = await api.post(`auth/login/${authProvider}`, user);
     localStorage.setItem("role", "patient");
 
-    const res = await fetch(`${BACK_END_URL}api/auth/login/${authProvider}`, {
+    /* const res = await fetch(`${BACK_END_URL}api/auth/login/${authProvider}`, {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        authorization: "Bearer " + user.accessToken,
       },
       method: "POST",
       body: user,
-    });
+    }); */
 
     dispatch({
       type: types.LOGIN_WITH_PROVIDER_SUCCESS,

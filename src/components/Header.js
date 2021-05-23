@@ -111,7 +111,7 @@ const Header = () => {
                     >
                       <div style={{ fontWeight: "normal" }}>
                         <h6>Demo account: </h6>
-                        <div>Patient account:</div>
+                        <div>Patient:</div>
                         <ul>
                           <li>
                             email:
@@ -122,7 +122,7 @@ const Header = () => {
                           </li>
                           <li>password: 123</li>
                         </ul>
-                        <div>Doctor account:</div>
+                        <div>Doctor:</div>
                         <ul>
                           <li>
                             email:{" "}

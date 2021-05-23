@@ -39,7 +39,7 @@ const loginWithProvider = (user, authProvider) => async (dispatch) => {
   try {
     console.log(user, authProvider);
 
-    const res = await api.post(`auth/login/${authProvider}`, user);
+    const res = await api.post(`auth/login/${authProvider}`, { user });
     localStorage.setItem("role", "patient");
 
     /* const res = await fetch(`${BACK_END_URL}api/auth/login/${authProvider}`, {

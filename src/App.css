@@ -314,6 +314,45 @@ html {
   height: 50px !important;
 }
 
+.nav-demo {
+  position: relative;
+  margin: auto;
+  display: flex;
+  border: 1px solid var(--light-green);
+  padding: 5px 15px;
+  border-radius: 15px;
+  background-color: #b4e47f91;
+  box-shadow: inset 0 0 10px 10px #f4fbed26;
+}
+.nav-demo:after {
+  content: "";
+  position: absolute;
+  width: 88px;
+  height: 33px;
+  left: 50%;
+  top: 50%;
+  border-radius: 15px;
+  transform: translate(-50%, -50%);
+  animation: demo 2s infinite;
+  box-shadow: inset 0 0 10px 10px #61a51852;
+}
+.nav-demo svg {
+  transform: translateY(10%);
+}
+
+@keyframes demo {
+  0% {
+    width: 88px;
+    height: 33px;
+  }
+  100% {
+    width: 110px;
+    height: 50px;
+    border-radius: 20px;
+    box-shadow: inset 0 0 10px 10px white;
+  }
+}
+
 @media (min-width: 992px) {
   .nav-big-main li {
     display: block;

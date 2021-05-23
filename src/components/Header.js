@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../redux/actions/auth.action";
+import ReactTooltip from "react-tooltip";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,50 @@ const Header = () => {
                       </NavDropdown>
                     </>
                   )}
+
+                  <Nav.Item
+                    bsPrefix="nav-item nav-demo"
+                    data-tip
+                    data-for="circle-card-icon-calendar"
+                  >
+                    <FontAwesomeIcon
+                      icon={["fas", "info"]}
+                      size="md"
+                      className="mr-1"
+                    />
+                    Demo
+                    <ReactTooltip
+                      id="circle-card-icon-calendar"
+                      type="error"
+                      className="cirlce-tooltip"
+                      arrowColor="#dedede"
+                    >
+                      <div style={{ fontWeight: "normal" }}>
+                        <h6>Demo account: </h6>
+                        <div>Patient account:</div>
+                        <ul>
+                          <li>
+                            email:
+                            <strong style={{ textTransform: "lowercase" }}>
+                              {" "}
+                              patient@gmail.com
+                            </strong>
+                          </li>
+                          <li>password: 123</li>
+                        </ul>
+                        <div>Doctor account:</div>
+                        <ul>
+                          <li>
+                            email:{" "}
+                            <strong style={{ textTransform: "lowercase" }}>
+                              doctor@gmail.com
+                            </strong>
+                          </li>
+                          <li>password: 123</li>
+                        </ul>
+                      </div>
+                    </ReactTooltip>
+                  </Nav.Item>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

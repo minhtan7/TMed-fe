@@ -62,6 +62,7 @@ import {
   faEye,
   faToggleOn,
   faToggleOff,
+  faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -119,7 +120,8 @@ library.add(
   faCalendarWeek,
   faEye,
   faToggleOn,
-  faToggleOff
+  faToggleOff,
+  faInfo
 );
 
 function App() {

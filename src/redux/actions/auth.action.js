@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
 import { Next } from "react-bootstrap/esm/PageItem";
 
+const BACK_END_URL = process.env.REACT_APP_BACKEND_API;
+
 const register = (profile) => async (dispatch) => {
   dispatch({ type: types.REGISTER_REQUEST });
   try {
@@ -36,8 +38,19 @@ const loginWithProvider = (user, authProvider) => async (dispatch) => {
   dispatch({ type: types.LOGIN_WITH_PROVIDER_REQUEST });
   try {
     console.log(user, authProvider);
-    const res = await api.post(`auth/login/${authProvider}`, user);
+
+    /* const res = await api.post(`auth/login/${authProvider}`, user); */
     localStorage.setItem("role", "patient");
+
+    const res = await fetch(`${BACK_END_URL}api/auth/login/${authProvider}`, {
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        authorization: "Bearer " + user.accessToken,
+      },
+      method: "POST",
+      body: user,
+    });
+
     dispatch({
       type: types.LOGIN_WITH_PROVIDER_SUCCESS,
       payload: res.data.data,

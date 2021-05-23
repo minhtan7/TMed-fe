@@ -45,6 +45,49 @@ const Header = () => {
                       <Nav.Link as={NavLink} to="/login" className="login-btn">
                         Login / Signup
                       </Nav.Link>
+                      <Nav.Item
+                        bsPrefix="nav-item nav-demo"
+                        data-tip
+                        data-for="circle-card-icon-calendar"
+                      >
+                        <FontAwesomeIcon
+                          icon={["fas", "info"]}
+                          size="md"
+                          className="mr-1"
+                        />
+                        Demo
+                        <ReactTooltip
+                          id="circle-card-icon-calendar"
+                          type="error"
+                          className="cirlce-tooltip"
+                          arrowColor="#dedede"
+                        >
+                          <div style={{ fontWeight: "normal" }}>
+                            <h6>Demo account: </h6>
+                            <div>Patient:</div>
+                            <ul>
+                              <li>
+                                email:
+                                <strong style={{ textTransform: "lowercase" }}>
+                                  {" "}
+                                  patient@gmail.com
+                                </strong>
+                              </li>
+                              <li>password: 123</li>
+                            </ul>
+                            <div>Doctor:</div>
+                            <ul>
+                              <li>
+                                email:{" "}
+                                <strong style={{ textTransform: "lowercase" }}>
+                                  doctor@gmail.com
+                                </strong>
+                              </li>
+                              <li>password: 123</li>
+                            </ul>
+                          </div>
+                        </ReactTooltip>
+                      </Nav.Item>
                     </div>
                   ) : role === "doctor" ? (
                     <>
@@ -91,50 +134,6 @@ const Header = () => {
                       </NavDropdown>
                     </>
                   )}
-
-                  <Nav.Item
-                    bsPrefix="nav-item nav-demo"
-                    data-tip
-                    data-for="circle-card-icon-calendar"
-                  >
-                    <FontAwesomeIcon
-                      icon={["fas", "info"]}
-                      size="md"
-                      className="mr-1"
-                    />
-                    Demo
-                    <ReactTooltip
-                      id="circle-card-icon-calendar"
-                      type="error"
-                      className="cirlce-tooltip"
-                      arrowColor="#dedede"
-                    >
-                      <div style={{ fontWeight: "normal" }}>
-                        <h6>Demo account: </h6>
-                        <div>Patient:</div>
-                        <ul>
-                          <li>
-                            email:
-                            <strong style={{ textTransform: "lowercase" }}>
-                              {" "}
-                              patient@gmail.com
-                            </strong>
-                          </li>
-                          <li>password: 123</li>
-                        </ul>
-                        <div>Doctor:</div>
-                        <ul>
-                          <li>
-                            email:{" "}
-                            <strong style={{ textTransform: "lowercase" }}>
-                              doctor@gmail.com
-                            </strong>
-                          </li>
-                          <li>password: 123</li>
-                        </ul>
-                      </div>
-                    </ReactTooltip>
-                  </Nav.Item>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

@@ -2,6 +2,7 @@ import * as types from "../constants/auth.constant";
 import api from "../api";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
+import { Next } from "react-bootstrap/esm/PageItem";
 
 const register = (profile) => async (dispatch) => {
   dispatch({ type: types.REGISTER_REQUEST });
@@ -30,6 +31,27 @@ const login = (profile) => async (dispatch) => {
     dispatch({ type: types.LOGIN_FAILURE, payload: err });
   }
 };
+
+const loginWithProvider = (user, authProvider) => async (dispatch) => {
+  dispatch({ type: types.LOGIN_WITH_PROVIDER_REQUEST });
+  try {
+    console.log(user, authProvider);
+    const accessToken = user.accessToken;
+    const res = await api.post(`auth/login/${authProvider}`, {
+      accessToken,
+      user,
+    });
+    localStorage.setItem("role", "patient");
+    dispatch({
+      type: types.LOGIN_WITH_PROVIDER_SUCCESS,
+      payload: res.data.data,
+    });
+    toast.success("Login Successfully");
+  } catch (error) {
+    dispatch({ type: types.LOGIN_WITH_PROVIDER_FAILURE });
+  }
+};
+
 const logout = () => (dispatch) => {
   delete api.defaults.headers.common["Authorization"];
   localStorage.removeItem("accessToken");
@@ -52,4 +74,5 @@ export const authActions = {
   login,
   logout,
   verifyEmail,
+  loginWithProvider,
 };

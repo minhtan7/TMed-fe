@@ -44,10 +44,12 @@ const LoginPage = () => {
     }
   }, [history, userInfo, redirect]);
 
-  const [user, setUser] = useState();
+  /*   const [user, setUser] = useState(); */
 
   const oauthLogin = async (user, authProvider) => {
-    console.log(user);
+    dispatch(authActions.loginWithProvider(user, authProvider));
+
+    /* console.log(user);
     const access_token = user.accessToken;
     const url = `/auth/login/${authProvider}`;
     const res = await api.post(url, { access_token, user });
@@ -56,8 +58,9 @@ const LoginPage = () => {
       newUser.authenticated = true;
       newUser.provider = authProvider;
       setUser(newUser);
-    }
+    } */
   };
+
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   if (isAuthenticated) return <Redirect to="/" />;
   return (

@@ -41,10 +41,16 @@ const Header = () => {
                   </Nav.Link>
 
                   {!isAuthenticated ? (
-                    <div className="login-btn-nav">
-                      <Nav.Link as={NavLink} to="/login" className="login-btn">
-                        Login / Signup
-                      </Nav.Link>
+                    <>
+                      <div className="login-btn-nav">
+                        <Nav.Link
+                          as={NavLink}
+                          to="/login"
+                          className="login-btn"
+                        >
+                          Login / Signup
+                        </Nav.Link>
+                      </div>
                       <Nav.Item
                         bsPrefix="nav-item nav-demo"
                         data-tip
@@ -87,8 +93,8 @@ const Header = () => {
                             </ul>
                           </div>
                         </ReactTooltip>
-                      </Nav.Item>
-                    </div>
+                      </Nav.Item>{" "}
+                    </>
                   ) : role === "doctor" ? (
                     <>
                       <Nav.Link as={NavLink} to="/doctor/dashboard/me">

@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Dropdown, Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import React from "react";
+import {  Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../redux/actions/auth.action";
 import ReactTooltip from "react-tooltip";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [show, setShow] = useState(false);
+  // const history = useHistory();
+  // const [show, setShow] = useState(false);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const role = useSelector((state) => state.auth.role);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
   const handleLogout = () => {
     dispatch(authActions.logout());
   };

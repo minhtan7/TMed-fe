@@ -21,7 +21,7 @@ const Header = () => {
       <div className="nav-big fixed-top">
         <Link to="/" className="nav-center">
           <img
-            src="https://res.cloudinary.com/tanvo/image/upload/v1617513851/tmed-logo-3_cv7wfz.png"
+            src="https://res.cloudinary.com/tanvo/image/upload/v1617513851/tmed/tmed-logo-3_cv7wfz.png"
             alt=""
             style={{ height: "80px", width: "auto" }}
           />

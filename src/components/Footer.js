@@ -61,7 +61,7 @@ const Footer = () => {
             <Col>
               <div className="footer-logo mx-auto">
                 <img
-                  src="https://res.cloudinary.com/tanvo/image/upload/v1617513851/tmed-logo-3_cv7wfz.png"
+                  src="https://res.cloudinary.com/tanvo/image/upload/v1617513851/tmed/tmed-logo-3_cv7wfz.png"
                   alt=""
                   style={{ width: "80%" }}
                 />

@@ -19,7 +19,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import HashLoader from "react-spinners/HashLoader";
 import Pagination from "react-js-pagination";
-import { ETIME } from "constants";
+// import { ETIME } from "constants";
 
 const DoctorSearchPage = () => {
   const dispatch = useDispatch();

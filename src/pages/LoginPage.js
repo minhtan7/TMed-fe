@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../redux/actions/auth.action";
 import { useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
-import FacebookLogin from "react-facebook-login";
+// import FacebookLogin from "react-facebook-login";
 import api from "../redux/api";
 const FB_APP_ID = process.env.REACT_APP_FB_APP_ID;
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -116,7 +116,7 @@ const LoginPage = () => {
                       onFailure={() => console.log("Google Login Failure")}
                     />
                   </Row>
-                  <Row className="facebook-btn">
+                  {/* <Row className="facebook-btn">
                     <FacebookLogin
                       appId={FB_APP_ID}
                       icon="fa-facebook"
@@ -124,7 +124,7 @@ const LoginPage = () => {
                       callback={(u) => oauthLogin(u, "facebook")}
                       onFailure={() => console.log("Facebook Login Failure")}
                     />
-                  </Row>
+                  </Row> */}
                 </Form>
               </div>
             </Col>

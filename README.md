@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# TMED - Doctor Appointment Booking
+![demo](https://img.shields.io/badge/demo-live-brightgreen)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TMED is a doctor appointment booking website designed specifically for doctors and patients up to ten years old. The platform enables users to easily manage appointments and access various features tailored for both doctors and patients.
 
-## Available Scripts
+**Demo links**: [TMED](https://tmed.netlify.app)
 
-In the project directory, you can run:
+**Table of content:**
+- [Features](#Features)
+    - [General Features](#General-Features)
+    - [Doctor Perspective Features](#Doctor-Perspective-Features)
+    - [Patient Perspective Features](#Patient-Perspective-Features)
+- [Tech Stack](#Tech-Stack)
+- [User Stories](#User-Stories)
+    - [As a general user](#As-a-general-user)
+    - [As a patient](#As-a-patient)
+    - [As a doctor](#As-a-doctor)
+- [Future Features](#Future-Features)
+- [Demo Screenshots and GIFs](#Demo-Screenshots-and-GIFs)
 
-### `npm start`
+## Features
+### General Features
+- Login manually or with Google, Facebook
+- Update profile information
+### Doctor Perspective Features
+- Set available hours range
+- Accept or decline the booking
+- See a dashboard for managing appointment information
+### Patient Perspective Features
+- Filter doctors based on specialization or district
+- See the doctor's information: academic background, rating, reviews, and available time of the week
+- See a calendar containing all slots with specific status: request, accepted, available, or unavailable
+- Book an appointment two weeks in advance with a small amount of deposit (login required)
+- Use PayPal for payment
+- Cancel the request 24 hours before the booking time and get back the deposit consequently
+- Leave a comment after finishing the appointment
+- See a dashboard for managing appointment information
+- Allow patients to rate and review doctors after their appointments, helping other patients make informed decisions when choosing a doctor.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## User Stories
+### As a general user:
+- Browse doctors and filter based on specialization or location
+- View doctor details, including academic background, rating, reviews, and available time slots
+- Create an account manually or using Google or Facebook
+- Update profile information
+### As a patient:
+- Book a doctor's appointment up to two weeks in advance and pay a small deposit through PayPal
+- View appointment calendar with available, requested, accepted, and unavailable time slots
+- Cancel appointments at least 24 hours in advance and receive a refund of the deposit
+- Rate and review doctors after appointments
+- Manage appointments using a dedicated dashboard
+### As a doctor:
+- Set available hours range
+- Accept or decline appointment bookings
+- View and manage appointment information using a dedicated dashboard
+## Tech Stack
+TMED is built using the following technologies:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- MERN stack: MongoDB, Express, React, Node.js
+- Bootstrap, React-Bootstrap, Redux, Mongoose
 
-### `npm test`
+## Future Features
+- **Appointment Reminders**: Send automated reminders to patients and doctors via email or SMS, reminding them of their upcoming appointments.
+- **Prescription Management**: Enable doctors to create and share digital prescriptions with patients, allowing patients to access and manage their prescriptions through the platform.
+- **Chat Support**: Offer a chat support feature that allows patients to ask questions and get assistance from healthcare professionals.
+- **Customizable Profiles**: Allow doctors to create customizable profiles, showcasing their qualifications, experience, areas of expertise, and other relevant information.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Demo Screenshots and GIFs
+To be Updated
